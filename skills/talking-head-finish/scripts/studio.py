@@ -1,6 +1,7 @@
 """Portable, standard-library CLI for authored talking-head video projects."""
 from pathlib import Path
 import argparse,array,hashlib,json,math,os,random,re,shutil,subprocess,sys,wave
+from capabilities import validate_choice
 if hasattr(sys.stdout,'reconfigure'):sys.stdout.reconfigure(encoding='utf-8')
 SKILL=Path(__file__).resolve().parents[1]
 
@@ -33,6 +34,7 @@ def inside(project,asset):
 
 def validate(project,plan,require_ready=True):
     if require_ready and plan.get('status')!='ready':raise ValueError('This is a scaffold. Author the semantic scene plan and set status=ready after review.')
+    if require_ready:validate_choice(project)
     if plan['fps']!=60 or [plan['width'],plan['height']]!=[1920,1080]:raise ValueError('This release currently supports 1920x1080 / 60fps')
     if type(plan['frames']) is not int or plan['frames']<=0:raise ValueError('Total frames must be a positive integer')
     for key in ['presenter','mediaPreview']:
@@ -83,6 +85,7 @@ def init(project,video=None,srt=None,demo=False):
         save(project/'source-record.json',dict(original_srt_sha256=sha(srt),original_video_sha256=sha(video),source_duration=duration,speed=1.0))
         plan=dict(version=1,status='needs_authoring',fps=60,width=1920,height=1080,frames=frames,presenter='source.mp4',mask=None,scenes=[dict(id='author-this-scene',start=0,frames=frames,kind='side',eyebrow='请按本期文案重新设计',lines=['本期重点'])])
     rows=srt_rows(project/'original.srt');save(project/'plan.json',plan);save(project/'captions.json',rows);write_data(project,plan,rows)
+    if not demo:save(project/'production-choice.json',dict(schema=1,mode=None,user_choice_required=True,history=[]))
     print('INITIALIZED',project,'status='+plan['status'])
 
 def setup(project,pm='auto'):
@@ -155,14 +158,18 @@ def render(project):
     info=probe(project/'out/final.mp4');v=next(s for s in info['streams'] if s['codec_type']=='video')
     assert int(v['nb_frames'])==plan['frames'] and v['r_frame_rate']=='60/1'
     save(project/'out/report.json',dict(full_decode=True,frames=int(v['nb_frames']),fps=60,width=int(v['width']),height=int(v['height']),sha256=sha(project/'out/final.mp4'),srt_exact=sha(project/'original.srt')==sha(project/'out/final.srt'),voice_speed=1.0,bgm_added=False,narration='original input audio' if plan.get('presenter') else 'none; code-only technical demo',agent_visual_review='pending',manual_listening=False))
+    report=read(project/'out/report.json')
+    report['production_mode']=read(project/'production-choice.json')['mode'] if (project/'production-choice.json').exists() else 'legacy_or_code_demo'
+    save(project/'out/report.json',report)
     print('DELIVERED',project/'out/final.mp4')
 
 def doctor(project=None):
     checks={k:shutil.which(k) for k in ['node','npm','pnpm','ffmpeg','ffprobe','nvidia-smi']}
-    checks['python']=sys.version.split()[0];checks['font']=(SKILL/'assets/template/public/SourceHanSansCN-700.otf').exists()
+    checks['python']=sys.version.split()[0];checks['python_supported']=sys.version_info>=(3,11)
+    checks['font']=all((SKILL/'assets/template/public'/name).is_file() for name in ['SourceHanSansCN-700.otf','SourceHanSansCN-900.otf'])
     checks['browser']=next((str(p) for p in [Path(os.environ.get('REMOTION_BROWSER_EXECUTABLE','missing')),Path('C:/Program Files/Google/Chrome/Application/chrome.exe'),Path('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe')] if p.is_file()),None)
     checks['libass']=bool(checks['ffmpeg'] and 'subtitles' in subprocess.check_output([checks['ffmpeg'],'-hide_banner','-filters'],stderr=subprocess.DEVNULL).decode('utf-8','replace'))
-    checks['package_manager']=bool(checks['npm'] or checks['pnpm']);checks['base_ready']=all(checks[k] for k in ['node','ffmpeg','ffprobe','font','package_manager','browser','libass'])
+    checks['package_manager']=bool(checks['npm'] or checks['pnpm']);checks['base_ready']=all(checks[k] for k in ['node','ffmpeg','ffprobe','font','package_manager','browser','libass','python_supported'])
     if project:checks['project_plan_valid']=validate(project,read(project/'plan.json'))
     print(json.dumps(checks,ensure_ascii=False,indent=2))
     return checks
@@ -175,7 +182,8 @@ def main():
         if cmd=='setup':q.add_argument('--pm',choices=['auto','npm','pnpm'],default='auto')
     a=p.parse_args()
     try:
-        if a.command=='doctor':doctor(a.project)
+        if a.command=='doctor':
+            if not doctor(a.project)['base_ready']:raise SystemExit(2)
         elif a.command=='demo':init(a.project,demo=True)
         elif a.command=='init':init(a.project,a.video,a.srt)
         elif a.command=='setup':setup(a.project.resolve(),a.pm)

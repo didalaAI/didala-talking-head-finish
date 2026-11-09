@@ -10,6 +10,7 @@
 plan.json         Agent为本期编写的整数帧分镜
 original.srt      原字幕，不改写
 source-record.json 输入哈希（真实输入项目）
+production-choice.json 本期选择；未选或defer时不能当最终成片导出
 public/           本项目视频、动态mask、截图、字体和生成片段
 src/              可编辑Remotion组件
 out/final.mp4
@@ -42,3 +43,5 @@ out/report.json
 本版将原片规范到1080p60，不变速；音视频尾差超过0.2秒时需先检查输入，不自动长冻结。短尾差仅补足原片声音所需的画面。源字幕哈希被保留；要改稿应另建明确的新版本，而不是直接改original.srt。
 
 修改plan后执行check，再渲染。检查out/report.json中的技术状态，并实际观看当前MP4。文字阅读不够应改镜头分工、提前进入或保留标签，不擅自加速口播。
+
+首次使用先读[first-run.md](first-run.md)。Python要求≥3.11；doctor缺基础依赖返回2，H3不影响基础检测。新输入项目须记录选择，旧项目与代码demo不追溯要求补选。

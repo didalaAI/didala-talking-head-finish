@@ -1,7 +1,8 @@
-import importlib.util,json,os,tempfile,threading,unittest
+import importlib.util,json,os,sys,tempfile,threading,unittest
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'skills/talking-head-finish/scripts'))
 def load(name):
     spec=importlib.util.spec_from_file_location(name,ROOT/'skills/talking-head-finish/scripts'/f'{name}.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);return m
 studio=load('studio');generate=load('generate')

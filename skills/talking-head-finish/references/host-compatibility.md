@@ -13,6 +13,8 @@
 
 ## WorkBuddy
 
+普通粉丝只需发仓库链接说“帮我安装Skill”，Agent按[仓库安装约定](https://github.com/didalaAI/didala-talking-head-finish/blob/main/docs/INSTALL-FOR-AGENTS.md)安装完整资源并检测环境。制作时读[first-run.md](first-run.md)；没有可用H3由粉丝选择，不默认降为静态PPT。下面轻量包是受限导入的补充路线，不是唯一安装方式。
+
 [WorkBuddy官方技能文档](https://open.workbuddy.cn/docs/skill)支持SKILL.md、参考资料和脚本；市场入口列出的元数据比本仓Codex入口更多。因此提供独立的WorkBuddy轻量引导包，补齐其展示字段，避免把Codex安装路径当成所有宿主的路径。
 
 先导入轻量包，再把完整仓库作为授权工作区。由该环境实际运行Python、Node/npm或pnpm、FFmpeg/ffprobe/libass及Chrome/Edge。若缺工具，先配置；本包不假定WorkBuddy内置了这些软件，也不假定它与宿主电脑共享同一个盘符和进程环境。
