@@ -1,0 +1,242 @@
+[
+  {
+    "id": "IntroHuman",
+    "mode": "side",
+    "purpose": "开场禁止同一窗口聊到底；视觉回应突然变笨的经历",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "RequirementsUI",
+    "mode": "full",
+    "purpose": "明确三条要求，随后状态开始丢失",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "FixLoss",
+    "mode": "h3",
+    "purpose": "提醒一项恢复，另一项却掉线",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "WaitingUI",
+    "mode": "full",
+    "purpose": "小修改迟迟没有完成，连续显示卡住与重试",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "ClarifyHuman",
+    "mode": "side",
+    "purpose": "降智疑问转向上下文窗口，整词排版",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "Definition",
+    "mode": "full",
+    "purpose": "一次输入的文字通过有限读取范围，直接解释窗口",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "Aperture",
+    "mode": "h3",
+    "purpose": "实体读取孔径拓宽，同时读入更多信息",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "MisconceptionHuman",
+    "mode": "side",
+    "purpose": "提出模型是否真的记住的误区",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "StatelessIntro",
+    "mode": "h3",
+    "purpose": "A current question is handled; transaction ends and the active desk is cleared. No old request is retained in the active call.",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "StatelessCore",
+    "mode": "h3",
+    "purpose": "A current question is handled; transaction ends and the active desk is cleared. No old request is retained in the active call.",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "MemoryQuestionHuman",
+    "mode": "side",
+    "purpose": "三个应用与看似记住的反问，动态历史辅助",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "NewWindow",
+    "mode": "full",
+    "purpose": "原窗口含历史，新窗口未携带旧对话，直接展示原因",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "RoundPacket",
+    "mode": "full",
+    "purpose": "第三轮输入逐项接入当前问题、第一轮提问和回复、第二轮提问和回复",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "HistoryResend",
+    "mode": "full",
+    "purpose": "历史整段重发，在回答前重新读取",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "ReReadFilm",
+    "mode": "h3",
+    "purpose": "外部记录带连续流经读取头，解释重读而非模型记忆",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "HistoryStack",
+    "mode": "full",
+    "purpose": "新问题与回复不断落入真实变厚的记录堆",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "FiniteIntro",
+    "mode": "full",
+    "purpose": "明确可处理范围有限，超出后转入流水线例子",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "OverflowA",
+    "mode": "full",
+    "purpose": "Replace earlier repeated robot conveyor shot; old material outside the reading boundary is not processed.",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "OverflowB",
+    "mode": "h3",
+    "purpose": "同一个动作故事续镜，只在本段使用机器人流水线",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "CapacityHuman",
+    "mode": "side",
+    "purpose": "不是变笨，是达到可读取范围的限制",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "Screenshots",
+    "mode": "full",
+    "purpose": "真实原截图连续定位并放大占用提示，无画框式标题",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "GaugeIntro",
+    "mode": "full",
+    "purpose": "个人经验的70%提示，建立观察负载",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "LoadEngine",
+    "mode": "full",
+    "purpose": "信息负载增加，精密机械运转吃力、变慢",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "TokenCost",
+    "mode": "full",
+    "purpose": "读取的信息和消耗的Token随输入增加",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "ManageHuman",
+    "mode": "side",
+    "purpose": "硬聊被删去，转为管理上下文",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "ModelCapacity",
+    "mode": "full",
+    "purpose": "模型标识依原声切换，范围扩大，部分型号支持100万Token",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "WatchHuman",
+    "mode": "side",
+    "purpose": "窗口再大也不硬聊；关注使用情况；70%按原话出现",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "HandoffRequest",
+    "mode": "full",
+    "purpose": "从占用提示接到总结进度与重点的请求，标题继续进入下一镜",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "HandoffPack",
+    "mode": "full",
+    "purpose": "从杂乱工作记录中整理要点，放入便携交接文件夹",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "HandoffCarry",
+    "mode": "h3",
+    "purpose": "同一文件夹从旧桌移到干净新桌，打开读取",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "ResumeWork",
+    "mode": "full",
+    "purpose": "新窗口已读入交接，接着同一项工作",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "CompressFold",
+    "mode": "full",
+    "purpose": "Long conversation folds into a compact useful summary",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "CompressLoad",
+    "mode": "h3",
+    "purpose": "A physical miniature reading machine works slowly under a huge input burden",
+    "code_entry": "references/h3-shot-recipes.json"
+  },
+  {
+    "id": "CompressionResult",
+    "mode": "full",
+    "purpose": "A missing concrete constraint can affect the following video-editing result",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "SummaryHuman",
+    "mode": "side",
+    "purpose": "完整真人开场总结，提出模型本身不主动记忆",
+    "code_entry": "assets/template/src/Human.tsx"
+  },
+  {
+    "id": "RecapRead",
+    "mode": "full",
+    "purpose": "看似记得来自每次重发和重读，记录继续增长",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "RecapCapacity",
+    "mode": "full",
+    "purpose": "有限范围容不下旧内容，新的内容确实把旧内容推到范围外",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "RecapHandoff",
+    "mode": "full",
+    "purpose": "从旧对话提取进度、重要要求与下一步，生成同一份交接.md",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "FreshPaperDesk",
+    "mode": "full",
+    "purpose": "纸艺人物带交接文件到干净桌面，打开并继续写作",
+    "code_entry": "assets/template/src/Remade.tsx"
+  },
+  {
+    "id": "ClosingHuman",
+    "mode": "side",
+    "purpose": "先讲完更靠谱的结论，再结束、点赞关注评论、下期见",
+    "code_entry": "assets/template/src/Human.tsx"
+  }
+]

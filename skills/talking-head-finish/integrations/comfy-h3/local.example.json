@@ -1,0 +1,7 @@
+{
+  "provider": "local",
+  "base_url": "http://127.0.0.1:8188",
+  "workflow": "local-workflow.json",
+  "split_conditioning": true,
+  "bindings": {"image": ["1", "image"], "prompt": ["5", "prompt"], "seed": ["6", "noise_seed"]}
+}

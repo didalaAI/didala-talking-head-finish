@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "status": "ready",
+  "fps": 60,
+  "width": 1920,
+  "height": 1080,
+  "frames": 1440,
+  "presenter": null,
+  "mask": null,
+  "scenes": [
+    {
+      "id": "opening",
+      "start": 0,
+      "frames": 240,
+      "kind": "side",
+      "eyebrow": "公开版 · 可运行小样",
+      "lines": [
+        "把重点",
+        "讲清楚"
+      ],
+      "foot": "原声原速 · 语义动效 · 无BGM"
+    },
+    {
+      "id": "definition",
+      "start": 240,
+      "frames": 300,
+      "kind": "mg",
+      "variant": "Definition"
+    },
+    {
+      "id": "history",
+      "start": 540,
+      "frames": 300,
+      "kind": "mg",
+      "variant": "HistoryStack"
+    },
+    {
+      "id": "summary",
+      "start": 840,
+      "frames": 300,
+      "kind": "mg",
+      "variant": "CompressFold"
+    },
+    {
+      "id": "closing",
+      "start": 1140,
+      "frames": 300,
+      "kind": "punch",
+      "eyebrow": "保留目标、进度和关键要求",
+      "lines": [
+        "交接，再出发"
+      ],
+      "foot": "换一个窗口，把工作接着做"
+    }
+  ],
+  "sound_events": [
+    {
+      "at": 0.15,
+      "kind": "whoosh"
+    },
+    {
+      "at": 0.7,
+      "kind": "tick"
+    },
+    {
+      "at": 4.1,
+      "kind": "whoosh"
+    },
+    {
+      "at": 5.4,
+      "kind": "tick"
+    },
+    {
+      "at": 9.1,
+      "kind": "whoosh"
+    },
+    {
+      "at": 10.2,
+      "kind": "tick"
+    },
+    {
+      "at": 12.5,
+      "kind": "tick"
+    },
+    {
+      "at": 14.1,
+      "kind": "whoosh"
+    },
+    {
+      "at": 16.5,
+      "kind": "paper"
+    },
+    {
+      "at": 19.1,
+      "kind": "whoosh"
+    },
+    {
+      "at": 21,
+      "kind": "tick"
+    }
+  ]
+}

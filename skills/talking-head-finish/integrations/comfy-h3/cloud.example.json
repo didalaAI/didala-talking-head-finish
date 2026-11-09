@@ -1,0 +1,8 @@
+{
+  "provider": "cloud",
+  "base_url": "https://cloud.comfy.org/api",
+  "key_env": "COMFY_CLOUD_API_KEY",
+  "workflow": "your-exported-cloud-api-workflow.json",
+  "split_conditioning": false,
+  "bindings": {"image": ["1", "image"], "prompt": ["5", "prompt"], "seed": ["6", "noise_seed"]}
+}

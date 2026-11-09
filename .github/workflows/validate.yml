@@ -1,0 +1,45 @@
+name: Public skill validation
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -v
+      - run: python scripts/release.py audit
+  windows-demo:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: skills/talking-head-finish/assets/template/package-lock.json
+      - name: Install FFmpeg
+        shell: powershell
+        run: choco install ffmpeg --no-progress -y
+      - name: Create demo
+        run: python skills/talking-head-finish/scripts/studio.py demo --project projects/demo
+      - name: Install locked packages and typecheck
+        run: python skills/talking-head-finish/scripts/studio.py setup --project projects/demo --pm npm
+      - name: Environment and real render
+        shell: powershell
+        run: |
+          $env:REMOTION_BROWSER_EXECUTABLE = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
+          python skills/talking-head-finish/scripts/studio.py doctor --project projects/demo
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python skills/talking-head-finish/scripts/studio.py render --project projects/demo
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-demo
+          path: |
+            projects/demo/out/final.mp4
+            projects/demo/out/final.srt
+            projects/demo/out/report.json

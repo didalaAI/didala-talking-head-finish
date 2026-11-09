@@ -1,0 +1,11 @@
+const fs=require('fs'),path=require('path');
+const {bundle}=require('@remotion/bundler');
+const {selectComposition,renderMedia,renderStill}=require('@remotion/renderer');
+(async()=>{const mode=process.argv[2]||'video',output=process.argv[3]||path.join('out','visual.mp4');fs.mkdirSync(path.dirname(output),{recursive:true});
+ const candidates=[process.env.REMOTION_BROWSER_EXECUTABLE,...(process.platform==='win32'?['C:/Program Files/Google/Chrome/Application/chrome.exe','C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe']:[])];const browserExecutable=candidates.find(p=>p&&fs.existsSync(p));
+ if(!browserExecutable)throw new Error('Install Chrome/Edge or set REMOTION_BROWSER_EXECUTABLE. This release does not silently download a browser.');
+ const serveUrl=await bundle({entryPoint:path.join(__dirname,'src/index.ts')});const composition=await selectComposition({serveUrl,id:'Episode',browserExecutable});
+ if(mode==='still')await renderStill({serveUrl,composition,browserExecutable,frame:Number(process.argv[4]||0),output,imageFormat:'png'});
+ else await renderMedia({serveUrl,composition:{...composition,props:{previewCaptions:false}},inputProps:{previewCaptions:false},browserExecutable,outputLocation:output,codec:'h264',crf:16,x264Preset:'fast',pixelFormat:'yuv420p',concurrency:2,muted:true,chromiumOptions:{gl:'swiftshader'},onProgress:({progress})=>{const p=Math.floor(progress*100);if(p%20===0&&p!==global.last){global.last=p;console.log('RENDER',p+'%')}}});
+ console.log('COMPLETE',output,composition.durationInFrames,composition.fps);
+})().catch(e=>{console.error(e.message);process.exit(1)});
