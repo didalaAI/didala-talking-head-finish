@@ -1,101 +1,119 @@
 {
-  "version": 1,
+  "version": 2,
   "status": "ready",
   "fps": 60,
   "width": 1920,
   "height": 1080,
-  "frames": 1440,
+  "frames": 2160,
   "presenter": null,
   "mask": null,
+  "technical_demo": true,
   "scenes": [
     {
-      "id": "opening",
+      "id": "demo-0",
+      "kind": "promo",
+      "variant": "intro",
       "start": 0,
-      "frames": 240,
-      "kind": "side",
-      "eyebrow": "公开版 · 可运行小样",
-      "lines": [
-        "把重点",
-        "讲清楚"
-      ],
-      "foot": "原声原速 · 语义动效 · 无BGM"
+      "frames": 210
     },
     {
-      "id": "definition",
-      "start": 240,
-      "frames": 300,
+      "id": "demo-1",
+      "kind": "promo",
+      "variant": "backgrounds",
+      "start": 210,
+      "frames": 240
+    },
+    {
+      "id": "demo-2",
       "kind": "mg",
-      "variant": "Definition"
+      "variant": "P2-Capacity",
+      "start": 450,
+      "frames": 420
     },
     {
-      "id": "history",
-      "start": 540,
-      "frames": 300,
+      "id": "demo-3",
       "kind": "mg",
-      "variant": "HistoryStack"
+      "variant": "P2-Packet",
+      "start": 870,
+      "frames": 540
     },
     {
-      "id": "summary",
-      "start": 840,
-      "frames": 300,
+      "id": "demo-4",
       "kind": "mg",
-      "variant": "CompressFold"
+      "variant": "W1-Capacity",
+      "start": 1410,
+      "frames": 240
     },
     {
-      "id": "closing",
-      "start": 1140,
-      "frames": 300,
-      "kind": "punch",
-      "eyebrow": "保留目标、进度和关键要求",
-      "lines": [
-        "交接，再出发"
-      ],
-      "foot": "换一个窗口，把工作接着做"
+      "id": "demo-5",
+      "kind": "mg",
+      "variant": "V1-Capacity",
+      "start": 1650,
+      "frames": 270
+    },
+    {
+      "id": "demo-6",
+      "kind": "promo",
+      "variant": "outro",
+      "start": 1920,
+      "frames": 240
     }
   ],
   "sound_events": [
     {
-      "at": 0.15,
+      "at": 0.05,
       "kind": "whoosh"
     },
     {
-      "at": 0.7,
+      "at": 1.1,
       "kind": "tick"
     },
     {
-      "at": 4.1,
+      "at": 3.55,
       "kind": "whoosh"
     },
     {
-      "at": 5.4,
+      "at": 4.6,
       "kind": "tick"
     },
     {
-      "at": 9.1,
+      "at": 7.55,
       "kind": "whoosh"
     },
     {
-      "at": 10.2,
+      "at": 8.6,
       "kind": "tick"
     },
     {
-      "at": 12.5,
+      "at": 14.55,
+      "kind": "whoosh"
+    },
+    {
+      "at": 15.6,
       "kind": "tick"
     },
     {
-      "at": 14.1,
+      "at": 23.55,
       "kind": "whoosh"
     },
     {
-      "at": 16.5,
-      "kind": "paper"
+      "at": 24.6,
+      "kind": "tick"
     },
     {
-      "at": 19.1,
+      "at": 27.55,
       "kind": "whoosh"
     },
     {
-      "at": 21,
+      "at": 28.6,
+      "kind": "tick"
+    },
+    {
+      "at": 32.05,
+      "kind": "whoosh"
+    },
+    {
+      "at": 33.1,
       "kind": "tick"
     }
   ]

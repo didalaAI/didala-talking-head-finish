@@ -9,3 +9,10 @@
 - MiniMax H3及其量化、编码器、VAE组件不分发。请读取[所选模型的完整许可](https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE)及权重来源，核对地区、用途和商业条件。云端账号受其服务条款及费用约束。
 
 本包没有作者真人、原录音、聊天截图、模型权重、完整软件环境或凭据。用户应只输入自己有权处理、上传和发布的素材。
+
+
+## 0.2 backgrounds and matting
+
+The no-person purple studio background is included at the author's explicit request. The other three backgrounds are original procedural artwork. These four images may be reused with this project under its MIT distribution license. No private portrait or narration is bundled.
+
+The independently written local ONNX adapter accepts separately acquired [Robust Video Matting](https://github.com/PeterL1n/RobustVideoMatting) weights. Upstream RVM code/weights use GPL-3.0; neither their model source nor their weights are bundled or relicensed here. Obtain them from the official source and follow their terms. NumPy, Pillow and ONNX Runtime retain their own licenses; optional dependencies are installed in a separate user-selected environment.

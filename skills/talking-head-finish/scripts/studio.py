@@ -37,7 +37,7 @@ def validate(project,plan,require_ready=True):
     if require_ready:validate_choice(project)
     if plan['fps']!=60 or [plan['width'],plan['height']]!=[1920,1080]:raise ValueError('This release currently supports 1920x1080 / 60fps')
     if type(plan['frames']) is not int or plan['frames']<=0:raise ValueError('Total frames must be a positive integer')
-    for key in ['presenter','mediaPreview']:
+    for key in ['presenter','mediaPreview','foreground','audio_source']:
         if plan.get(key) and not inside(project,plan[key]).is_file():raise ValueError('Missing project asset: '+key)
     for event in plan.get('sound_events',[]):
         if not 0<=event['at']<plan['frames']/60:raise ValueError('Sound event is outside the movie')
@@ -48,11 +48,14 @@ def validate(project,plan,require_ready=True):
         ids.add(s['id'])
         if type(s['start']) is not int or type(s['frames']) is not int or s['start']!=cursor or s['frames']<=0:raise ValueError('Scene plan must cover the movie with integer frames, without gaps or overlaps')
         cursor+=s['frames']
-        if s['kind'] not in ['side','punch','mg','h3','screen']:raise ValueError('Unknown scene kind')
+        if s['kind'] not in ['side','punch','mg','h3','video','screen','promo']:raise ValueError('Unknown scene kind')
+        if s['kind']=='mg':
+            allowed={x['id'] for x in read(SKILL/'references/approved-effects.json')['effects'] if x['mode']=='mg'}
+            if s.get('variant',s['id']) not in allowed:raise ValueError('MG is not in the confirmed effect collection')
         if s.get('through_body') and plan.get('presenter') and not plan.get('mask'):raise ValueError('Through-body text requires a real dynamic person mask. No static-mask fallback.')
-        if s['kind']=='h3':
+        if s['kind'] in ['h3','video']:
             p=inside(project,s.get('asset',''));v=next(x for x in probe(p)['streams'] if x['codec_type']=='video')
-            if float(v.get('duration',0))+1/float(plan['fps'])<s['frames']/plan['fps']:raise ValueError('Generated clip is too short; freezing its tail is not allowed')
+            if float(v.get('duration',0))+1/float(plan['fps'])<(s['frames']+s.get('trimBefore',0))/plan['fps']:raise ValueError('Generated clip is too short; freezing its tail is not allowed')
         if s['kind']=='screen':
             cfg=s.get('screen',{})
             if not inside(project,cfg['asset']).is_file():raise ValueError('Missing original screenshot')
@@ -62,7 +65,14 @@ def validate(project,plan,require_ready=True):
     if cursor!=plan['frames']:raise ValueError('Plan length does not equal total frames')
     if plan.get('mask'):
         v=next(x for x in probe(inside(project,plan['mask']))['streams'] if x['codec_type']=='video')
-        if int(v.get('nb_frames',0))<2 or float(v.get('duration',0))+.05<plan['frames']/60:raise ValueError('Mask must be a full-length moving video, not an image')
+        count=v.get('nb_frames')
+        if not count or count=='N/A':
+            counted=json.loads(subprocess.check_output(['ffprobe','-v','error','-count_frames','-select_streams','v:0','-show_entries','stream=nb_read_frames','-of','json',str(inside(project,plan['mask']))]))
+            count=counted['streams'][0].get('nb_read_frames',0)
+        if int(count)<plan['frames']:raise ValueError('Mask must be a full-length moving video, not an image')
+    if plan.get('background') and require_ready:
+        record=project/'matting/matting-record.json'
+        if not record.is_file() or read(record).get('status')!='reviewed':raise ValueError('Review moving hair, hands and person edges; then record matting status=reviewed before final export')
     return True
 
 def write_data(project,plan,rows):
@@ -72,6 +82,7 @@ def init(project,video=None,srt=None,demo=False):
     project=project.resolve()
     if project.exists() and any(project.iterdir()):raise ValueError('Use an empty/new project folder. Existing work is never overwritten.')
     shutil.copytree(SKILL/'assets/template',project,dirs_exist_ok=True)
+    shutil.copytree(SKILL/'assets/backgrounds',project/'public/backgrounds',dirs_exist_ok=True)
     if demo:
         plan=read(SKILL/'assets/demo-plan.json');shutil.copy2(SKILL/'assets/demo.srt',project/'original.srt')
     else:
@@ -142,22 +153,25 @@ def render(project):
     write_data(project,plan,rows);ass(project,rows);sound(project,plan)
     node=shutil.which('node');run([node,project/'render.cjs','video','out/visual.mp4'],project)
     args=['ffmpeg','-v','error','-y','-i','out/visual.mp4','-i','sfx.wav'];filters=[];video='0:v';audio='1:a';idx=2
-    if plan.get('presenter'):
-        src=inside(project,plan['presenter']);info=probe(src)
+    if plan.get('presenter') or plan.get('audio_source'):
+        src=inside(project,plan.get('audio_source') or plan['presenter']);info=probe(src)
         args+=['-i',src];source_idx=idx;idx+=1
         if any(s['codec_type']=='audio' for s in info['streams']):filters.append(f'[{source_idx}:a]aresample=48000,apad[voice];[voice][1:a]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.97:level=false:latency=true[mix]');audio='mix'
         if plan.get('mask'):
             args+=['-i',inside(project,plan['mask'])];mask_idx=idx;idx+=1
             spans=[f'between(t,{s["start"]/60},{(s["start"]+s["frames"]-1)/60})' for s in plan['scenes'] if s.get('through_body')]
             if spans:
-                filters.append(f'[{mask_idx}:v]scale=1920:1080,fps=60,format=gray[mask];[{source_idx}:v][mask]alphamerge[person];[0:v][person]overlay=enable=\''+'+'.join(spans)+"'[restored]");video='restored'
-    filters.append(f'[{video}]subtitles=filename=captions.ass:fontsdir=public[v]')
+                rgb_idx=source_idx
+                if plan.get('foreground'):
+                    args+=['-i',inside(project,plan['foreground'])];rgb_idx=idx;idx+=1
+                filters.append(f'[{mask_idx}:v]scale=1920:1080,fps=60,format=gray[mask];[{rgb_idx}:v][mask]alphamerge[person];[0:v][person]overlay=enable=\''+'+'.join(spans)+"'[restored]");video='restored'
+    filters.append(f'[{video}]'+('null[v]' if plan.get('captions_burned') else 'subtitles=filename=captions.ass:fontsdir=public[v]'))
     args+=['-filter_complex',';'.join(filters),'-map','[v]','-map',f'[{audio}]' if audio=='mix' else audio,'-t',str(plan['frames']/60),'-c:v','libx264','-crf','16','-preset','fast','-c:a','aac','-b:a','192k','-pix_fmt','yuv420p','-movflags','+faststart','out/final.mp4']
     run(args,project);shutil.copy2(project/'original.srt',project/'out/final.srt')
     run(['ffmpeg','-v','error','-i','out/final.mp4','-f','null','-'],project)
     info=probe(project/'out/final.mp4');v=next(s for s in info['streams'] if s['codec_type']=='video')
     assert int(v['nb_frames'])==plan['frames'] and v['r_frame_rate']=='60/1'
-    save(project/'out/report.json',dict(full_decode=True,frames=int(v['nb_frames']),fps=60,width=int(v['width']),height=int(v['height']),sha256=sha(project/'out/final.mp4'),srt_exact=sha(project/'original.srt')==sha(project/'out/final.srt'),voice_speed=1.0,bgm_added=False,narration='original input audio' if plan.get('presenter') else 'none; code-only technical demo',agent_visual_review='pending',manual_listening=False))
+    save(project/'out/report.json',dict(full_decode=True,frames=int(v['nb_frames']),fps=60,width=int(v['width']),height=int(v['height']),sha256=sha(project/'out/final.mp4'),srt_exact=sha(project/'original.srt')==sha(project/'out/final.srt'),voice_speed=1.0,bgm_added=False,narration='original input audio' if plan.get('presenter') or plan.get('audio_source') else 'none; code-only technical demo',agent_visual_review='pending',manual_listening=False))
     report=read(project/'out/report.json')
     report['production_mode']=read(project/'production-choice.json')['mode'] if (project/'production-choice.json').exists() else 'legacy_or_code_demo'
     save(project/'out/report.json',report)

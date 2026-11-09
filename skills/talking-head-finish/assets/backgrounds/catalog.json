@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "default": "didala-purple",
+  "items": [
+    {
+      "id": "didala-purple",
+      "name": "迪达拉紫蓝 AI 演播室",
+      "file": "didala-purple.png",
+      "source": "作者明确指定分享的无人物背景"
+    },
+    {
+      "id": "pearl-gallery",
+      "name": "珍珠白展厅",
+      "file": "pearl-gallery.png",
+      "source": "本仓原创程序生成的干净空间背景"
+    },
+    {
+      "id": "midnight-navy",
+      "name": "午夜蓝演播室",
+      "file": "midnight-navy.png",
+      "source": "本仓原创程序生成的干净空间背景"
+    },
+    {
+      "id": "warm-editorial",
+      "name": "暖灰人文书房",
+      "file": "warm-editorial.png",
+      "source": "本仓原创程序生成的干净空间背景"
+    }
+  ]
+}

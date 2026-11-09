@@ -39,3 +39,10 @@ python scripts/capabilities.py choose --project <项目目录> --mode motion --n
 - **defer**：写`missing-shots.json`，含SRT范围、语义变化、首帧/动作提示词、时长、原因与接入方式。预览文件/报告标明未完成，不把占位、冻结和文字页当最终成片。`render`会阻止未选或defer项目导出final；预览可用Remotion Studio，或项目render.cjs导出明确命名的工作预览。
 
 按production.md审核小样与完整动作、字效和衔接。保留原声原速、原SRT和可编辑工程；技术检查、实际观看、人工试听分别记录。安装Skill或选定模型不保证首版达到作者审美，须依据当前编码继续修订。
+
+
+## 本版的人物与宣传预览
+
+初始化后按 matting.md 提供四种干净背景并处理本期动态人物；已有明确偏好沿用。抠像工具/模型与 H3 分别检测，H3 缺失不阻止替景。完成实际抠像动态审查后记录 reviewed；默认不保留杂乱原背景当作已完成替景。
+
+安装演示是 36 秒宣传式效果样片。用户本期保持完整原时间线，另外按 promo-preview.md 交付真实节选的宣传预览，不把短样片当成完整口播交付。

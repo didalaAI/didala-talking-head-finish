@@ -17,3 +17,10 @@
 `integrations/comfy-h3/nodes`是本项目的辅助节点代码，不能代替Comfy及GGUF上游。云端工作流须由使用者从实际账号导出；本包不携带账号工作流中的密钥。H3镜头配方只包含创作方法和参数，不包含原片、真人或生成视频。
 
 本仓库不承诺上游许可永久不变。发布模型或将其用于商业活动前，使用者应读取所选版本的完整许可。不存在“安装这个Skill即可绕过模型或Remotion授权”的安排。
+
+
+## 0.2 backgrounds and matting
+
+The no-person purple studio background is included at the author's explicit request. The other three backgrounds are original procedural artwork. These four images may be reused with this project under its MIT distribution license. No private portrait or narration is bundled.
+
+The independently written local ONNX adapter accepts separately acquired [Robust Video Matting](https://github.com/PeterL1n/RobustVideoMatting) weights. Upstream RVM code/weights use GPL-3.0; neither their model source nor their weights are bundled or relicensed here. Obtain them from the official source and follow their terms. NumPy, Pillow and ONNX Runtime retain their own licenses; optional dependencies are installed in a separate user-selected environment.

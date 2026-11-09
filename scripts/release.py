@@ -2,7 +2,7 @@
 from pathlib import Path
 import argparse,hashlib,json,re,sys,zipfile
 ROOT=Path(__file__).resolve().parents[1]
-EXTENSIONS={'.md','.py','.tsx','.ts','.cjs','.json','.yaml','.yml','.txt','.otf'}
+EXTENSIONS={'.md','.py','.tsx','.ts','.cjs','.json','.yaml','.yml','.txt','.otf','.png'}
 NAMES={'LICENSE','.gitignore','.gitattributes','.env.example'}
 TEXT_ASSETS={'examples/demo.srt','skills/talking-head-finish/assets/demo.srt'}
 EXCLUDED={'.git','node_modules','__pycache__','.venv','projects','outputs','out'}
@@ -21,7 +21,7 @@ def audit():
         if p.suffix.lower() not in EXTENSIONS and p.name not in NAMES and rel not in TEXT_ASSETS:errors.append('Unexpected source file: '+rel)
         if p.is_symlink():errors.append('Symlinks are not release source: '+rel)
         if p.stat().st_size>=100*1024*1024:errors.append('File exceeds repository limit: '+rel)
-        if p.suffix.lower()=='.otf':continue
+        if p.suffix.lower() in {'.otf','.png'}:continue
         content=p.read_text(encoding='utf-8-sig')
         if any(pattern.search(content) for pattern in patterns):errors.append('Potential private path or credential in '+rel)
         if p.suffix=='.md':
@@ -30,7 +30,7 @@ def audit():
                 target=(p.parent/value.split('#')[0]).resolve()
                 if not target.is_relative_to(ROOT) or not target.is_file():errors.append('Broken local link in '+rel+': '+value)
     if errors:raise ValueError('\n'.join(errors))
-    result=dict(status='passed',files=len(files),source_bytes=sum(p.stat().st_size for p in files),media_bundled=False,model_weights_bundled=False,installed_environments_bundled=False)
+    result=dict(status='passed',files=len(files),source_bytes=sum(p.stat().st_size for p in files),media_bundled=False,background_images_bundled=sum(p.suffix.lower()=='.png' for p in files),model_weights_bundled=False,installed_environments_bundled=False)
     print(json.dumps(result,indent=2));return files,result
 
 def package(destination):

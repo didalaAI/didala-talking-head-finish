@@ -1,10 +1,11 @@
 """Install the complete skill; preserve private/unmanaged installations."""
 from pathlib import Path
 import argparse, hashlib, json, os, tempfile
+from datetime import datetime
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / 'skills/talking-head-finish'
-VERSION = '0.1.2-preview'
+VERSION = '0.2.0-preview'
 REPOSITORY = 'https://github.com/didalaAI/didala-talking-head-finish'
 RECEIPT = '.installation.json'
 EXCLUDED = {'__pycache__', 'node_modules', '.git', '.env', '.venv'}
@@ -35,7 +36,7 @@ def payload(host):
                  'display_name_en: Didala Talking Head Finish\n'
                  'description_zh: 用自己的口播和SRT制作语义动效成片，按可用后端选择制作方式。\n'
                  'description_en: Produce semantic talking-head motion graphics from your video and SRT.\n'
-                 'version: "0.1.2"\nauthor: "didalaAI"\n')
+                 'version: "0.2.0"\nauthor: "didalaAI"\n')
         result['SKILL.md'] = ('---' + head + '---' + body).encode('utf-8')
     required = ['scripts/studio.py', 'scripts/capabilities.py', 'references/first-run.md',
                 'assets/template/public/SourceHanSansCN-700.otf',
@@ -66,16 +67,22 @@ def verify(target, expected=None):
                 files=len(actual), target=str(target), runtime_checked=False)
 
 
-def install(target, host='codex'):
+def install(target, host='codex', upgrade=False):
+    if Path(target).is_symlink():raise ValueError('Use the real host installation folder; symlink targets are not replaced')
     target = Path(target).expanduser().resolve()
     if target == SOURCE or target.is_relative_to(SOURCE) or SOURCE.is_relative_to(target):
         raise ValueError('Installation target must be separate from the source skill')
     data = payload(host)
     hashes = {name: hashlib.sha256(value).hexdigest() for name, value in data.items()}
+    backup=None
     if target.exists():
-        result = verify(target, hashes)
-        result['status'] = 'already_installed'
-        return result
+        current=verify(target)
+        if json.loads((target/RECEIPT).read_text(encoding='utf-8'))['files']==hashes:
+            current['status']='already_installed';return current
+        if not upgrade:raise ValueError('A different managed version exists; use --upgrade for a verified update with backup. Nothing overwritten.')
+        backup_root=(target.parent.parent/'skill-backups').resolve()
+        backup=backup_root/(target.name+'-'+current['version']+'-'+datetime.now().strftime('%Y%m%d-%H%M%S-%f'))
+        if not backup.resolve().is_relative_to(backup_root) or backup.exists():raise ValueError('Unsafe or occupied backup path')
     target.parent.mkdir(parents=True, exist_ok=True)
     # Only this newly created staging directory is cleaned; never an existing skill.
     with tempfile.TemporaryDirectory(prefix='.talking-head-install-', dir=target.parent) as temporary:
@@ -87,9 +94,17 @@ def install(target, host='codex'):
         (stage / RECEIPT).write_text(json.dumps(dict(schema=1, repository=REPOSITORY,
             version=VERSION, host=host, files=hashes), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         verify(stage, hashes)
-        stage.rename(target)
+        if backup:
+            backup.parent.mkdir(parents=True,exist_ok=True)
+            # Both resolved paths are fixed to the selected install folder and the dedicated backup root.
+            target.rename(backup)
+        try:stage.rename(target)
+        except OSError:
+            if backup and not target.exists():backup.rename(target)
+            raise
     result = verify(target, hashes)
-    result['status'] = 'installed'
+    result['status'] = 'upgraded' if backup else 'installed'
+    if backup:result['backup']=str(backup)
     return result
 
 
@@ -99,6 +114,7 @@ def main():
     p.add_argument('--host', choices=['codex', 'workbuddy', 'doubao-work', 'generic'], default='codex')
     p.add_argument('--legacy-codex-home', action='store_true')
     p.add_argument('--verify', action='store_true', help='Verify the receipt without changing files')
+    p.add_argument('--upgrade', action='store_true', help='Update an unchanged managed installation, retaining a verified backup')
     a = p.parse_args()
     try:
         if a.legacy_codex_home and a.host != 'codex':
@@ -110,7 +126,7 @@ def main():
             if not a.legacy_codex_home and (codex_root / 'skills/talking-head-finish').exists():
                 raise ValueError('Legacy same-name skill exists; preserve it and choose --target explicitly')
             a.target = (codex_root / 'skills' if a.legacy_codex_home else Path.home() / '.agents/skills') / 'talking-head-finish'
-        result = verify(a.target) if a.verify else install(a.target, a.host)
+        result = verify(a.target) if a.verify else install(a.target, a.host,a.upgrade)
         print(json.dumps(result, ensure_ascii=False, indent=2))
     except (ValueError, OSError, KeyError) as error:
         p.exit(1, 'ERROR: ' + str(error) + '\n')

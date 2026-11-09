@@ -39,3 +39,8 @@ python <Skill目录>/scripts/studio.py render --project <新演示目录>
 有可用本地H3就沿用并先验证短镜头。没有则由用户选择：动态MG与现有素材完成整片、接入自己的云服务、Agent已有其他视频模型、先做其余部分稍后补动画。不自动切换、不自动下载大模型或提交收费任务。
 
 公开源码无需GitHub登录。粉丝使用自己的素材和后端账号，不需要作者密码、令牌或模型。WorkBuddy、豆包工作仍待真实客户端试用，见[运行边界](../skills/talking-head-finish/references/host-compatibility.md)。
+
+
+0.2 更新：已由本安装器管理且未修改的版本，可运行 `install_skill.py --upgrade` 原位升级；先核对收据，完整备份保存在所选安装目录的上级 skill-backups。私用版、无收据或有本地编辑的安装仍保留，不能强制覆盖。安装后确认宿主实际加载了 0.2.0-preview，不要让旧副本遮住新副本。
+
+普通粉丝只需视频+字幕。Agent 按本版 matting.md 处理杂乱背景、展示背景选择，再按 promo-preview.md 做本期效果预览；H3 继续由用户选择，并非必装。抠像使用自己的本地模型/独立环境，不下载或分发作者环境。
