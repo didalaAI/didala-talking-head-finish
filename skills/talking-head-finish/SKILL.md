@@ -12,6 +12,7 @@ description: 用已剪口播与SRT制作语义动效成片，复用V4真实MG代
 - 制作前读 [V4效果选择与品质](references/production.md)，再按[40段机制索引](references/v4-effect-catalog.json)找实际代码。索引中的原案例数量和话题不成为新片默认时间轴。
 - 操作脚本先读 [运行与项目格式](references/runtime.md)。`assets/template/src`包含可运行的实体MG、文字进入/收稳和可配置截图推近，不靠形容词重猜风格。
 - 需要生成场景时读 [H3与云端接入](references/generation.md)及[镜头配方](references/h3-shot-recipes.json)。模型权重不随Skill分发。
+- 在WorkBuddy、豆包工作或其他宿主使用时先读[跨客户端运行边界](references/host-compatibility.md)，确认当前进程确实能访问素材、调用命令和渲染，不把安装成功当成成片成功。
 
 ## 制作
 

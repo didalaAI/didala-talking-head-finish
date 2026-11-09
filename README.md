@@ -1,12 +1,14 @@
 # 迪达拉口播成片 Skill
 
-**0.1.0-preview · Windows 首批公开预览版。**
+**0.1.1-preview · Windows 首批公开预览版。**
 
-公开仓库：[wangkaixiang-ai/didala-talking-head-finish](https://github.com/wangkaixiang-ai/didala-talking-head-finish)。打包源码、24秒基础demo与验证材料通过仓库的Releases提供。
+公开仓库：[didalaAI/didala-talking-head-finish](https://github.com/didalaAI/didala-talking-head-finish)。打包源码、24秒基础demo与验证材料通过仓库的Releases提供。
 
 从你自己的已剪视频与SRT出发，由Agent按文意编排旁字、实体MG、准确字幕和可选场景动画。包含真实V4机制代码，而非只有提示词。原声原速1.0，无BGM；新题材仍需重新设计语义分镜和审核动作。
 
 [40段效果覆盖](docs/V4-COVERAGE.md) · [发行与粉丝安装步骤](docs/RELEASE.md) · [实际验证记录](docs/VALIDATION.md)
+
+WorkBuddy、豆包工作用户先读[跨客户端使用说明](skills/talking-head-finish/references/host-compatibility.md)。本仓提供两种轻量工程引导包；完整字体与渲染代码从仓库使用。当前仅验证引导包结构、体积及基础运行时，尚未在这两个客户端完成整片端到端实测。
 
 ## 目前可以运行
 

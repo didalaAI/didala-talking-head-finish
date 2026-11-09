@@ -1,6 +1,8 @@
-# 0.1.0-preview 验证记录
+# 0.1.1-preview 验证记录
 
 验证日期：2026-11-09。以下结果来自本轮公开源码，不能由旧V4成片成功记录替代。预览版面向Windows；其他系统尚未完整验证。
+
+0.1.1补充：增加4项宿主引导包测试，检查WorkBuddy字段、两个包的资源体积与范围、拒绝覆盖及完整字体未被修改；与原有11项基础测试合计15项。导出包通过这些检查仍不代表在WorkBuddy或豆包工作客户端跑过整条口播。
 
 | 项目 | 本轮状态与证据 |
 | --- | --- |
@@ -18,7 +20,7 @@
 | 本地H3重新生成 | **未通过**。Comfy启动阶段被Windows应用程序控制拦截Torch `fbgemm.dll`，WinError4551；未上传/提交实际生成任务，没有绕过系统策略 |
 | Comfy Cloud | 本地HTTP模拟验证上传、X-API-Key、history_v2、收据续等、不重复提交、跨域去鉴权及失败响应保密；**没有真实账号生成实测** |
 | 超分与插帧 | 可选代码与接口已提供；本轮GPU路径**未重新实测** |
-| GitHub Actions | 配置文件已提供；在线执行结果以[仓库Actions](https://github.com/wangkaixiang-ai/didala-talking-head-finish/actions)及对应提交为准，本地通过不代替在线通过 |
+| GitHub Actions | 配置文件已提供；在线执行结果以[仓库Actions](https://github.com/didalaAI/didala-talking-head-finish/actions)及对应提交为准，本地通过不代替在线通过 |
 | 跨机器与粉丝试用 | **待完成**。同一开发机的独立目录与无第三方Python环境验证，不等于全新电脑验证 |
 
 参考软件：Python3.12.14、Node24.22.1、pnpm11.25.0、FFmpeg/ffprobe9.0.1、已安装Chrome；Remotion4.0.539、React19.2.0、TypeScript5.9.3。基础渲染不依赖GPU。版本号记录实际测试组合，不承诺任意版本兼容。
