@@ -52,3 +52,12 @@ out/report.json
 替景依 matting.md，音频从 audio_source 读取，穿身从 foreground+mask 恢复。FFV1 动态 mask 没有 nb_frames 元数据时会实际计帧验证，不因容器元数据缺失误判成静图。替景记录须 reviewed 才可最终导出。
 
 宣传节选工程的 captions_burned=true 表示实际源片已经烧录字幕；原 SRT 作为无重复叠字的时间重排侧车保留。仅由 showreel.py 用于真实已编码片段，不用于跳过原片字幕制作。
+
+
+真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
+
+
+真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
+
+
+真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。

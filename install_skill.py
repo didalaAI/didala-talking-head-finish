@@ -1,6 +1,6 @@
 """Install the complete skill; preserve private/unmanaged installations."""
 from pathlib import Path
-import argparse, hashlib, json, os, tempfile
+import argparse, hashlib, json, os, tempfile, shutil
 from datetime import datetime
 
 ROOT = Path(__file__).resolve().parent
@@ -95,6 +95,8 @@ def install(target, host='codex', upgrade=False):
             version=VERSION, host=host, files=hashes), ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         verify(stage, hashes)
         if backup:
+            for local_config in target.glob('config.local*'):
+                if local_config.is_file() and not local_config.is_symlink():shutil.copy2(local_config,stage/local_config.name)
             backup.parent.mkdir(parents=True,exist_ok=True)
             # Both resolved paths are fixed to the selected install folder and the dedicated backup root.
             target.rename(backup)

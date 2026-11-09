@@ -1,0 +1,218 @@
+{
+  "schema": 1,
+  "scope": "九项已确认真人文字的可编辑编排，非新片默认话术/时码",
+  "use": "选择对应variant，按新SRT重写lines/eyebrow/foot/beats/tags/meter；frames与beats秒数都要按本期原声重新计算。用punch的场景必须through_body及本期动态mask。原案例数字阈值不是通用建议。",
+  "examples": [
+    {
+      "variant": "IntroHuman",
+      "kind": "side",
+      "frames": 480,
+      "eyebrow": "别把对话聊到失控",
+      "lines": [
+        "同一个窗口",
+        "别聊到底"
+      ],
+      "beats": [
+        {
+          "at": 2.8,
+          "kind": "side",
+          "eyebrow": "你也遇到过？",
+          "lines": [
+            "突然变笨？"
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "text": "忘要求",
+          "at": 4.13
+        },
+        {
+          "text": "理解跑偏",
+          "at": 4.4799999999999995
+        },
+        {
+          "text": "速度变慢",
+          "at": 4.83
+        }
+      ]
+    },
+    {
+      "variant": "ClarifyHuman",
+      "kind": "side",
+      "frames": 540,
+      "through_body": true,
+      "eyebrow": "先拆开问题",
+      "lines": [
+        "大模型",
+        "偷偷降智？"
+      ],
+      "beats": [
+        {
+          "at": 3.8,
+          "kind": "punch",
+          "lines": [
+            "上下文窗口"
+          ],
+          "eyebrow": "真正需要管理的",
+          "foot": "读入的内容，也有容量"
+        }
+      ]
+    },
+    {
+      "variant": "MisconceptionHuman",
+      "kind": "side",
+      "frames": 300,
+      "eyebrow": "先拆掉一个常见误解",
+      "lines": [
+        "它真的",
+        "有记忆吗？"
+      ],
+      "foot": "聊过的话，是怎么接上的？"
+    },
+    {
+      "variant": "MemoryQuestionHuman",
+      "kind": "side",
+      "frames": 420,
+      "eyebrow": "那为什么……",
+      "lines": [
+        "它还记得？"
+      ],
+      "tag_layout": "list",
+      "tags": [
+        {
+          "text": "之前的问题",
+          "at": 2.52
+        },
+        {
+          "text": "前一轮的回答",
+          "at": 3.0700000000000003
+        },
+        {
+          "text": "这次的新要求",
+          "at": 3.62
+        }
+      ]
+    },
+    {
+      "variant": "CapacityHuman",
+      "kind": "punch",
+      "frames": 300,
+      "through_body": true,
+      "eyebrow": "不是凭空变笨",
+      "lines": [
+        "容量上限"
+      ],
+      "foot": "前文，也有读取范围",
+      "meter": {
+        "at": 0.6,
+        "to": 1,
+        "y": 665,
+        "from": 0.8
+      }
+    },
+    {
+      "variant": "ManageHuman",
+      "kind": "punch",
+      "frames": 360,
+      "through_body": true,
+      "eyebrow": "聊得越久，越要主动管理",
+      "lines": [
+        "管理上下文"
+      ],
+      "foot": "别一直硬聊",
+      "beats": [
+        {
+          "at": 2.58,
+          "kind": "side",
+          "eyebrow": "解决方法其实很简单",
+          "lines": [
+            "怎么做？"
+          ],
+          "foot": ""
+        }
+      ]
+    },
+    {
+      "variant": "WatchHuman",
+      "kind": "side",
+      "frames": 660,
+      "eyebrow": "窗口再大，也有边界",
+      "lines": [
+        "同一个窗口",
+        "也别硬聊"
+      ],
+      "beats": [
+        {
+          "at": 4.96,
+          "kind": "side",
+          "eyebrow": "养成一个习惯",
+          "lines": [
+            "留意占用率"
+          ]
+        }
+      ],
+      "meter": {
+        "at": 0,
+        "to": 0.7,
+        "y": 660,
+        "value_y": 455,
+        "value": 70,
+        "unit": "%",
+        "value_at": 7.283,
+        "label": "原案例个人经验，不作通用阈值",
+        "from": 0.35
+      }
+    },
+    {
+      "variant": "SummaryHuman",
+      "kind": "side",
+      "frames": 300,
+      "eyebrow": "最后，记住这一点",
+      "lines": [
+        "模型",
+        "不主动记忆"
+      ],
+      "foot": "前文，需要随请求一起带入"
+    },
+    {
+      "variant": "ClosingHuman",
+      "kind": "side",
+      "frames": 420,
+      "eyebrow": "换个窗口，把进度接上",
+      "lines": [
+        "交接，更靠谱"
+      ],
+      "beats": [
+        {
+          "at": 1.034,
+          "kind": "side",
+          "eyebrow": "本期讲到这里",
+          "lines": [
+            "把上下文",
+            "管理好"
+          ]
+        },
+        {
+          "at": 3.683,
+          "kind": "cta",
+          "lines": [
+            "点赞",
+            "关注",
+            "评论"
+          ]
+        },
+        {
+          "at": 4.766,
+          "kind": "hero",
+          "eyebrow": "",
+          "lines": [
+            "下期见"
+          ],
+          "foot": ""
+        }
+      ],
+      "through_body": true
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 {
   "schema": 2,
   "version": "0.2.0",
-  "confirmed_via": "用户明确说“选好了，帮我写入skill”",
+  "confirmed_via": "用户明确说“选好了，帮我写入skill”，并已保存对应23项确认清单",
   "selection_revision": 12,
-  "selection_sha256": "2f50f2fbe767460c8287f06a9102ab2e12cd31b98abcc6d6b31488d785be6272",
+  "selection_sha256": "2a7c792efedb04131cee78b762cb074d37237e36cdc0f1da2856db349e8123d5",
   "effects": [
     {
       "id": "IntroHuman",
@@ -11,7 +11,9 @@
       "frequency": "regular",
       "purpose": "开场禁止同一窗口聊到底；视觉回应突然变笨的经历",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "IntroHuman"
     },
     {
       "id": "FixLoss",
@@ -27,7 +29,9 @@
       "frequency": "regular",
       "purpose": "降智疑问转向上下文窗口，整词排版",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "ClarifyHuman"
     },
     {
       "id": "Aperture",
@@ -43,7 +47,9 @@
       "frequency": "regular",
       "purpose": "提出模型是否真的记住的误区",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "MisconceptionHuman"
     },
     {
       "id": "StatelessIntro",
@@ -67,7 +73,9 @@
       "frequency": "regular",
       "purpose": "三个应用与看似记住的反问，动态历史辅助",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "MemoryQuestionHuman"
     },
     {
       "id": "ReReadFilm",
@@ -91,7 +99,9 @@
       "frequency": "regular",
       "purpose": "不是变笨，是达到可读取范围的限制",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "CapacityHuman"
     },
     {
       "id": "ManageHuman",
@@ -99,7 +109,9 @@
       "frequency": "regular",
       "purpose": "硬聊被删去，转为管理上下文",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "ManageHuman"
     },
     {
       "id": "WatchHuman",
@@ -107,7 +119,9 @@
       "frequency": "regular",
       "purpose": "窗口再大也不硬聊；关注使用情况；70%按原话出现",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "WatchHuman"
     },
     {
       "id": "HandoffCarry",
@@ -131,7 +145,9 @@
       "frequency": "regular",
       "purpose": "完整真人开场总结，提出模型本身不主动记忆",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "SummaryHuman"
     },
     {
       "id": "ClosingHuman",
@@ -139,7 +155,9 @@
       "frequency": "regular",
       "purpose": "先讲完更靠谱的结论，再结束、点赞关注评论、下期见",
       "code_entry": "assets/template/src/Human.tsx",
-      "note": ""
+      "note": "",
+      "choreography_file": "references/human-choreography.json",
+      "recipe_id": "ClosingHuman"
     },
     {
       "id": "P2-Capacity",

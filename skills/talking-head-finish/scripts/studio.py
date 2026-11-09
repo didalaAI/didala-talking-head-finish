@@ -53,6 +53,14 @@ def validate(project,plan,require_ready=True):
             allowed={x['id'] for x in read(SKILL/'references/approved-effects.json')['effects'] if x['mode']=='mg'}
             if s.get('variant',s['id']) not in allowed:raise ValueError('MG is not in the confirmed effect collection')
         if s.get('through_body') and plan.get('presenter') and not plan.get('mask'):raise ValueError('Through-body text requires a real dynamic person mask. No static-mask fallback.')
+        if plan.get('presenter') and (s['kind']=='punch' or s.get('variant',s['id']) in ['CapacityHuman','ManageHuman'] or any(b.get('kind') in ['punch','hero'] for b in s.get('beats',[]))) and not s.get('through_body'):raise ValueError('Presenter punch choreography must set through_body=true and use the current dynamic foreground/mask')
+        last_beat=-1
+        for beat in s.get('beats',[]):
+            if beat['at']<0 or beat['at']<=last_beat or beat['at']>=s['frames']/60 or not beat.get('lines') or beat.get('kind','side') not in ['side','punch','cta','hero']:raise ValueError('Human beats require ordered in-scene timestamps and authored lines')
+            last_beat=beat['at']
+        for tag in s.get('tags',[]):
+            if tag.get('at') is not None and not 0<=tag['at']<s['frames']/60:raise ValueError('Human tag is outside the scene')
+            if tag.get('asset') and not inside(project,tag['asset']).is_file():raise ValueError('Missing this-episode tag image')
         if s['kind'] in ['h3','video']:
             p=inside(project,s.get('asset',''));v=next(x for x in probe(p)['streams'] if x['codec_type']=='video')
             if float(v.get('duration',0))+1/float(plan['fps'])<(s['frames']+s.get('trimBefore',0))/plan['fps']:raise ValueError('Generated clip is too short; freezing its tail is not allowed')
@@ -76,7 +84,7 @@ def validate(project,plan,require_ready=True):
     return True
 
 def write_data(project,plan,rows):
-    (project/'src/data.ts').write_text("import {Plan} from './RuntimeContext';\nexport const plan:Plan="+json.dumps(plan,ensure_ascii=False)+";\nexport const captions="+json.dumps(rows,ensure_ascii=False)+";\n",encoding='utf-8')
+    (project/'src/data.ts').write_text("import {Plan} from './RuntimeContext';\nexport const plan:Plan="+json.dumps(plan,ensure_ascii=False)+";\nexport const captions:{start:number;end:number;text:string}[]="+json.dumps(rows,ensure_ascii=False)+";\n",encoding='utf-8')
 
 def init(project,video=None,srt=None,demo=False):
     project=project.resolve()

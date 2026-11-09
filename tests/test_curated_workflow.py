@@ -38,11 +38,26 @@ class CuratedWorkflow(unittest.TestCase):
    target=Path(d)/'skills/talking-head-finish';installer.install(target)
    old=target/'SKILL.md';old.write_bytes(old.read_bytes()+b'\nprior managed content\n');before=old.read_bytes()
    receipt=studio.read(target/installer.RECEIPT);receipt['version']='0.1.2-preview';receipt['files']['SKILL.md']=hashlib.sha256(before).hexdigest();studio.save(target/installer.RECEIPT,receipt)
+   (target/'config.local.json').write_text('{"matting_model":"user-model.onnx"}',encoding='utf-8')
    out=installer.install(target,upgrade=True);self.assertEqual(out['status'],'upgraded');self.assertEqual((Path(out['backup'])/'SKILL.md').read_bytes(),before)
+   self.assertEqual(json.loads((target/'config.local.json').read_text())['matting_model'],'user-model.onnx')
    old=target/'SKILL.md';old.write_bytes(old.read_bytes()+b'\nuser edit\n');before=old.read_bytes()
    with self.assertRaises(ValueError):installer.install(target,upgrade=True)
    self.assertEqual(old.read_bytes(),before)
  def test_placement_preserves_visible_subject_and_bottom_anchor(self):
   s,x,y=matting.placement([400,100,1300,1080],'right')
   self.assertGreaterEqual(x+s*400,0);self.assertLessEqual(x+s*1300,1920);self.assertAlmostEqual(y+s*1080,1080,delta=1)
+ def test_human_stage_timing_and_current_mask_requirement(self):
+  with tempfile.TemporaryDirectory() as d:
+   p=Path(d);(p/'public').mkdir();(p/'public/person.mp4').touch()
+   plan=dict(status='ready',fps=60,width=1920,height=1080,frames=180,presenter='person.mp4',scenes=[dict(id='s',kind='side',start=0,frames=180,beats=[dict(at=1,kind='punch',lines=['重点'])])])
+   with self.assertRaises(ValueError):studio.validate(p,plan)
+   plan['presenter']=None;plan['scenes'][0]['beats']=[dict(at=4,lines=['太晚'])]
+   with self.assertRaises(ValueError):studio.validate(p,plan)
+ def test_all_nine_saved_presenter_recipes_have_valid_stage_times(self):
+  recipes=studio.read(S/'references/human-choreography.json')['examples'];self.assertEqual(len(recipes),9)
+  with tempfile.TemporaryDirectory() as d:
+   for i,r in enumerate(recipes):
+    scene=dict(r,id='recipe-'+str(i),start=0)
+    self.assertTrue(studio.validate(Path(d),dict(status='ready',fps=60,width=1920,height=1080,frames=r['frames'],presenter=None,scenes=[scene])))
 if __name__=='__main__':unittest.main()
