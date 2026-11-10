@@ -34,7 +34,7 @@ class Client:
             # Do not print signed URLs, response bodies, API keys or provider headers.
             code=e.code;e.close()
             raise RuntimeError('Generation API returned HTTP '+str(code)+'; check account credits, workflow nodes and configuration.') from None
-        return result if raw else json.loads(result)
+        return result if raw else (json.loads(result) if result.strip() else {})
     def upload(self,image):
         image=Path(image);boundary='didala-'+uuid.uuid4().hex
         filename='input-'+uuid.uuid4().hex+image.suffix.lower()

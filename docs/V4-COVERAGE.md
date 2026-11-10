@@ -1,31 +1,45 @@
-# 已确认效果覆盖 · 0.2
+# 当前确认效果覆盖 · revision 159
 
-本页保留原链接，内容已按本轮确认替换。V4 的 40 段不是默认效果库。
+此表取代旧 V4 全量复制清单。只收录最新确认项；不同版本不是同一效果的重复记录。
 
-| id | 形式 | 频率 | 含义 |
-| --- | --- | --- | --- |
-| IntroHuman | side | regular | 开场禁止同一窗口聊到底；视觉回应突然变笨的经历 |
-| FixLoss | h3 | regular | 提醒一项恢复，另一项却掉线 |
-| ClarifyHuman | side | regular | 降智疑问转向上下文窗口，整词排版 |
-| Aperture | h3 | regular | 实体读取孔径拓宽，同时读入更多信息 |
-| MisconceptionHuman | side | regular | 提出模型是否真的记住的误区 |
-| StatelessIntro | h3 | regular | A current question is handled; transaction ends and the active desk is cleared. No old request is retained in the active call. |
-| StatelessCore | h3 | regular | A current question is handled; transaction ends and the active desk is cleared. No old request is retained in the active call. |
-| MemoryQuestionHuman | side | regular | 三个应用与看似记住的反问，动态历史辅助 |
-| ReReadFilm | h3 | regular | 外部记录带连续流经读取头，解释重读而非模型记忆 |
-| OverflowB | h3 | regular | 同一个动作故事续镜，只在本段使用机器人流水线 |
-| CapacityHuman | side | regular | 不是变笨，是达到可读取范围的限制 |
-| ManageHuman | side | regular | 硬聊被删去，转为管理上下文 |
-| WatchHuman | side | regular | 窗口再大也不硬聊；关注使用情况；70%按原话出现 |
-| HandoffCarry | h3 | regular | 同一文件夹从旧桌移到干净新桌，打开读取 |
-| CompressLoad | h3 | regular | A physical miniature reading machine works slowly under a huge input burden |
-| SummaryHuman | side | regular | 完整真人开场总结，提出模型本身不主动记忆 |
-| ClosingHuman | side | regular | 先讲完更靠谱的结论，再结束、点赞关注评论、下期见 |
-| P2-Capacity | mg | regular | 上下文窗口：一次能读取、处理多少内容 |
-| P2-Packet | mg | regular | 第三轮提问时，应用把前两轮问答也随请求带入 |
-| W1-Capacity | mg | occasional | 上下文窗口：一次能读取、处理多少内容 |
-| W1-Packet | mg | occasional | 第三轮提问时，应用把前两轮问答也随请求带入 |
-| V1-Capacity | mg | occasional | 上下文窗口：一次能读取、处理多少内容 |
-| V1-Packet | mg | occasional | 第三轮提问时，应用把前两轮问答也随请求带入 |
-
-完整机器可读清单见 [approved-effects.json](../skills/talking-head-finish/references/approved-effects.json)。
+| ID | 类型 | 使用频率 | 默认 |
+|---|---|---|---|
+| V31-IntroHuman | human | regular | 是 |
+| V31-ClarifyHuman | human | regular | 是 |
+| V31-MisconceptionHuman | human | regular | 是 |
+| V31-MemoryQuestionHuman | human | regular | 是 |
+| V31-CapacityHuman | human | regular | 是 |
+| V31-ManageHuman | human | regular | 是 |
+| V31-WatchHuman | human | regular | 是 |
+| V31-SummaryHuman | human | regular | 是 |
+| V31-ClosingHuman | human | regular | 是 |
+| V31-A-Human | human | regular | 是 |
+| V31-CelCounter | h3 | regular | 是 |
+| V3-B-Screen | screen | regular | 是 |
+| V3-C-Compare | mg | regular | 是 |
+| V3-D-Collage | mg | regular | 是 |
+| V3-E-Handoff | mg | regular | 是 |
+| V3-F-Explode | mg | regular | 是 |
+| V3-P2-Capacity | mg | regular | 是 |
+| V3-P2-Packet | mg | regular | 是 |
+| V3-V1-Capacity | mg | regular | 是 |
+| V3-V1-Packet | mg | regular | 是 |
+| V3-ClayReader | h3 | regular | 是 |
+| V3-Architecture | h3 | regular | 是 |
+| V3-OpticalReplay | h3 | occasional | 是 |
+| B-Screen | screen | regular | 保留变体 |
+| E-Handoff | mg | occasional | 保留变体 |
+| F-Explode | mg | occasional | 保留变体 |
+| B-Screen-V2 | screen | regular | 保留变体 |
+| V2-IntroHuman | human | regular | 保留变体 |
+| V2-FixLoss | h3 | regular | 是 |
+| V2-ClarifyHuman | human | regular | 保留变体 |
+| V2-Aperture | h3 | regular | 是 |
+| V2-MisconceptionHuman | human | regular | 保留变体 |
+| V2-StatelessIntro | h3 | regular | 是 |
+| V2-StatelessCore | h3 | regular | 是 |
+| V2-MemoryQuestionHuman | human | regular | 保留变体 |
+| V2-ReReadFilm | h3 | regular | 是 |
+| V2-OverflowB | h3 | regular | 是 |
+| V2-HandoffCarry | h3 | regular | 是 |
+| V2-CompressLoad | h3 | regular | 是 |

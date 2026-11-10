@@ -1,6 +1,6 @@
 # 迪达拉口播成片 Skill
 
-**0.2.0-preview · 已确认效果库、动态人物替景、宣传式预览。**
+**0.3.0 · 已确认效果库、动态人物替景、宣传式预览。**
 
 把拍好、剪好的口播和对应 SRT 交给 Agent：按文意制作真人字效、情景动画与完整成片，保留原声原速。背景杂乱时，先把原镜头中可见的人物动态分离，再放入选定的干净空间。
 
@@ -16,13 +16,13 @@
 
 ## 这一版具体有什么
 
-- **23 项已确认效果**：9 项真人文字机制、8 组生成场景配方、6 项 MG。无手纸艺常用，珍珠白与夜紫银读取装置偶尔；已移除旧青色/黑色 PPT 路由、带手纸艺与未选中的石墨橙。
+- **39 个已确认效果版本**：14 个真人字效、10 个 MG、3 个真实界面运镜、12 个生成场景；36 常用、3 偶尔。采用最新 revision 159；保留用户仍选中的旧版变体，移除未选白色装置与旧 PPT。不是只保存提示词：包含实际 TSX、文字/素材参数、动作时序、12 组生成配方及 4 张非私人参考首帧。
 - **动态人物替景**：本地 RVM ONNX 适配器，保留发丝/手势的连续蒙版、独立前景与原声音源，按本期人物自动定位；可供穿身文字恢复遮挡。模型独立准备，不随仓库分发。
 - **四种背景**：你熟悉的紫蓝 AI 演播室、珍珠白展厅、午夜蓝演播室、暖灰人文书房。默认包只含无人物底图。
 - **宣传式预览**：36 秒安装效果样片；本期可从实际成片按 SRT 句子边界建立宣传样片。完整口播、节选预览与可编辑工程分别交付。
 - **可选 H3/其他生成服务**：有可用服务就验证使用；没有由粉丝选择动态 MG 与素材、云服务、Agent 已有模型或稍后补镜头，不自动换服务或提交收费生成。
 
-效果与制作要求在[Skill 入口](skills/talking-head-finish/SKILL.md)、[已确认清单](skills/talking-head-finish/references/approved-effects.json)、[人物替景说明](skills/talking-head-finish/references/matting.md)、[宣传预览说明](skills/talking-head-finish/references/promo-preview.md)。[下载本版](https://github.com/didalaAI/didala-talking-head-finish/releases/tag/v0.2.0-preview)可取得源代码与实际宣传样片。
+效果与制作要求在[Skill 入口](skills/talking-head-finish/SKILL.md)、[已确认清单](skills/talking-head-finish/references/approved-effects.json)、[人物替景说明](skills/talking-head-finish/references/matting.md)、[宣传预览说明](skills/talking-head-finish/references/promo-preview.md)。[下载最新源码](https://github.com/didalaAI/didala-talking-head-finish/archive/refs/heads/main.zip)，或把仓库链接交给 Agent 安装。新增 [0.3.0 更新说明](docs/RELEASE.md)与[源码改编流程](skills/talking-head-finish/references/design-authoring.md)。
 
 ![四种无人物背景](docs/background-choices.png)
 

@@ -2,7 +2,7 @@ import hashlib,importlib.util,json,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 ROOT=Path(__file__).resolve().parents[1];S=ROOT/'skills/talking-head-finish';sys.path.insert(0,str(S/'scripts'))
-import studio,matting,showreel
+import studio,matting,showreel,design
 spec=importlib.util.spec_from_file_location('curated_installer',ROOT/'install_skill.py');installer=importlib.util.module_from_spec(spec);spec.loader.exec_module(installer)
 class CuratedWorkflow(unittest.TestCase):
  def test_rejected_mg_cannot_render_but_all_confirmed_mg_can(self):
@@ -10,7 +10,9 @@ class CuratedWorkflow(unittest.TestCase):
   with tempfile.TemporaryDirectory() as d:
    p=Path(d);plan=dict(status='ready',fps=60,width=1920,height=1080,frames=120,presenter=None,scenes=[dict(id='scene',start=0,frames=120,kind='mg')])
    for effect in allowed:
-    plan['scenes'][0]['variant']=effect;self.assertTrue(studio.validate(p,plan))
+    spec=design.example(effect);spec.update(semantic_alignment='测试本期对象与动作',reviewed_for_current_script=True)
+    frames=round(spec['duration']*60);spec['timing'][-1][1]=frames/60;studio.save(p/'design.json',spec)
+    plan['frames']=frames;plan['scenes'][0].update(variant=effect,frames=frames,design='design.json');self.assertTrue(studio.validate(p,plan))
    for effect in ['Definition','RequirementsUI','G1-Capacity','G1-Packet']:
     plan['scenes'][0]['variant']=effect
     with self.assertRaises(ValueError):studio.validate(p,plan)
@@ -54,10 +56,15 @@ class CuratedWorkflow(unittest.TestCase):
    with self.assertRaises(ValueError):studio.validate(p,plan)
    plan['presenter']=None;plan['scenes'][0]['beats']=[dict(at=4,lines=['太晚'])]
    with self.assertRaises(ValueError):studio.validate(p,plan)
- def test_all_nine_saved_presenter_recipes_have_valid_stage_times(self):
-  recipes=studio.read(S/'references/human-choreography.json')['examples'];self.assertEqual(len(recipes),9)
+ def test_all_fourteen_confirmed_presenter_variants_compile(self):
+  entries=[e for e in design.effects().values() if e['mode']=='human'];self.assertEqual(len(entries),14)
   with tempfile.TemporaryDirectory() as d:
-   for i,r in enumerate(recipes):
-    scene=dict(r,id='recipe-'+str(i),start=0)
-    self.assertTrue(studio.validate(Path(d),dict(status='ready',fps=60,width=1920,height=1080,frames=r['frames'],presenter=None,scenes=[scene])))
+   p=Path(d);(p/'public/icons').mkdir(parents=True)
+   for name in ['doubao','workbuddy','deepseek']:(p/'public/icons'/f'{name}.png').touch()
+   for i,e in enumerate(entries):
+    spec=design.example(e['id']);spec.update(semantic_alignment='本期重点与图标已对应',reviewed_for_current_script=True)
+    frames=round(spec['duration']*60);spec['timing'][-1][1]=frames/60;studio.save(p/'spec.json',spec)
+    scene=dict(id='recipe-'+str(i),start=0,frames=frames,kind='side',variant=e['id'],design='spec.json')
+    plan=dict(status='ready',fps=60,width=1920,height=1080,frames=frames,presenter=None,scenes=[scene])
+    self.assertTrue(studio.validate(p,plan));self.assertEqual(len(design.compile_project(p,plan)),1)
 if __name__=='__main__':unittest.main()

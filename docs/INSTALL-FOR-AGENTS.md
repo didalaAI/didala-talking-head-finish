@@ -6,7 +6,7 @@
 
 ## 安装完整资源
 
-- 优先使用当前Agent原生Skill安装能力，安装整个 `skills/talking-head-finish`。保留scripts、references、integrations、模板、两份完整字体及许可。只有SKILL.md不算完整安装。
+- 优先使用当前Agent原生Skill安装能力，安装整个 `skills/talking-head-finish`。保留scripts、references、integrations、模板、三份完整字体及许可、designs 源码、design-examples 与参考首帧。只有SKILL.md不算完整安装。
 - 没有原生安装工具时，下载/克隆完整仓库到持久的授权工作区，读取代码后运行根目录 `install_skill.py`。临时缓存不能充当永久运行资源。
 - Codex运行 `python install_skill.py`，默认位置 `~/.agents/skills/talking-head-finish`。旧`.codex/skills`已有同名版本时会保留并停止，先定位用户想用的版本，不覆盖私用版。
 - WorkBuddy、豆包工作及其他Agent：用原生安装器或客户端实际识别的技能目录，不猜通用路径。确认后运行 `python install_skill.py --host workbuddy --target <实际目录/talking-head-finish>`；豆包工作用`--host doubao-work`，其他宿主用`--host generic`。WorkBuddy安装器补齐展示元数据，不改变完整运行资源。
@@ -41,6 +41,6 @@ python <Skill目录>/scripts/studio.py render --project <新演示目录>
 公开源码无需GitHub登录。粉丝使用自己的素材和后端账号，不需要作者密码、令牌或模型。WorkBuddy、豆包工作仍待真实客户端试用，见[运行边界](../skills/talking-head-finish/references/host-compatibility.md)。
 
 
-0.2 更新：已由本安装器管理且未修改的版本，可运行 `install_skill.py --upgrade` 原位升级；先核对收据，完整备份保存在所选安装目录的上级 skill-backups。私用版、无收据或有本地编辑的安装仍保留，不能强制覆盖。安装后确认宿主实际加载了 0.2.0-preview，不要让旧副本遮住新副本。
+0.3 更新：已由本安装器管理且未修改的版本，可运行 `install_skill.py --upgrade` 原位升级；先核对收据，完整备份保存在所选安装目录的上级 skill-backups。私用版、无收据或有本地编辑的安装仍保留，不能强制覆盖。安装后确认宿主实际加载了 0.3.0，不要让旧副本遮住新副本。
 
 普通粉丝只需视频+字幕。Agent 按本版 matting.md 处理杂乱背景、展示背景选择，再按 promo-preview.md 做本期效果预览；H3 继续由用户选择，并非必装。抠像使用自己的本地模型/独立环境，不下载或分发作者环境。

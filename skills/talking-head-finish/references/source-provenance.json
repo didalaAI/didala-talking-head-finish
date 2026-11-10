@@ -1,0 +1,28 @@
+{
+  "version": "0.3.0",
+  "selection_revision": 159,
+  "design_sources": {
+    "assets/designs/v1/Scenes.tsx": "c37a7cdf7a3d3be5dfe49c43c64795cf961e19e2234016b8361dedb67414f914",
+    "assets/designs/v1/tokens.json": "260feab0c399d39e9d1959c91b1cd0402771fa3e13c649f7f6561957d7d4c81f",
+    "assets/designs/v2/Design.tsx": "f2633ab30102fd112cfec2667c89529ba4ed63b1709c9d920663ef1e3a5acedd",
+    "assets/designs/v2/human-recipes.json": "27eba09f26345a321bf02bbff5b344af56a1db92523f7edc9752ea8e3b28c0a8",
+    "assets/designs/v2/LibraryScenes.tsx": "bf33a6aa738a47ef3d884eccbc73308479d021560db4ae2e2a18fa10b4dad5d7",
+    "assets/designs/v2/NewScenes.tsx": "8ab8ace6e452abb559bef8def7c05788a8a59944f2a19b29f7fabb0526dc520f",
+    "assets/designs/v2/tokens.json": "378e2ebcbef62adac105cae369bee582f490e4bc2974e161d2262c7f34932fb0",
+    "assets/designs/v3/Film.tsx": "07f2bfed338d1d0b267dd4f43267b202c36a1786eff0d29d45ec8fc7fdf0deb7",
+    "assets/designs/v3/Kit.tsx": "7fdd62eef11f23bf20bdbca39c16c937e29068cb6fab99fa9975dedc4a0f6338",
+    "assets/designs/v3/Materials.tsx": "8b53d2d177e0c1dddd23365e34e900758be0049e0fc101a34ec1b4c77adea14f",
+    "assets/designs/v3/NewScenes.tsx": "684417e2faa2b645a589dd8d5f897b843f98d07e029488ae85968a74a4bfa779",
+    "assets/designs/v3/tokens.json": "3a8511ece15e2e5dced1f3399e72650386f787fafe29d8e1f1a172f357a39ac5",
+    "assets/designs/v31/Film.tsx": "aaa117b10d38e24f1b737042a9c613de67acdeb71ea7be1f7b4f374874fd5cc4",
+    "assets/designs/v31/human-recipes.json": "27eba09f26345a321bf02bbff5b344af56a1db92523f7edc9752ea8e3b28c0a8",
+    "assets/designs/v31/Human.tsx": "5268b51d74b60ff61d91c44633aacd5fcbfa62d25809a8fa8fb5c989686c622f",
+    "assets/designs/v31/Kit.tsx": "7fdd62eef11f23bf20bdbca39c16c937e29068cb6fab99fa9975dedc4a0f6338",
+    "assets/designs/v31/tokens.json": "c68e4b40eeccbcb3580151d3e042cf163f88dcdd85631d907dd395e40621e18e"
+  },
+  "notes": [
+    "Private presenter, voice, matte, screenshots and environment excluded.",
+    "Source templates preserve selected motion and layout; text, assets and time maps are authored per episode.",
+    "Generated clips are regenerated with user-chosen backends; weights and private finished videos are not bundled."
+  ]
+}

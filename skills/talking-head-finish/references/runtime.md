@@ -1,57 +1,30 @@
-# 运行与项目格式
+# 运行与项目格式 · 0.3.0
 
-基础CLI仅依赖Python标准库；Node依赖、FFmpeg和浏览器需单独安装。当前参考组合为Python3.12、Node24、Remotion4.0.539、React19.2.0和TypeScript5.9.3。基础渲染无需Torch或H3。首先执行doctor，必要时用`REMOTION_BROWSER_EXECUTABLE`指向实际Chrome/Edge。
+基础 CLI 使用 Python 标准库。需要 Python ≥3.11、Node/npm 或 pnpm、FFmpeg/ffprobe/libass、Chrome/Edge。锁定 Remotion 4.0.539、React 19.2.0、TypeScript 5.9.3。H3/Torch 不是基础渲染前提；生成与抠像另见各自说明。
 
-`demo`创建36秒完整示例；`init`为用户自己的视频创建未设计分镜的工程；两者都拒绝覆盖非空目录。`setup`优先npm ci，无npm时可使用pnpm导入同一package-lock并冻结安装。它不复制作者旧node_modules。`check`校验计划，`render`从计划生成Remotion数据、准确字幕、SFX和最终MP4。
+`demo` 创建 36 秒独立安装演示；`init` 从用户完整视频/SRT 建立 needs_authoring 工程。两者拒绝覆盖非空目录。`setup` 安装锁定的依赖并类型检查；`check` 检查分镜；`render` 编译已确认设计、生成 ASS 与 SFX、恢复动态人物前景、最终编码与全长解码。保留原声原速，默认无 BGM。
 
-项目文件：
-
-```text
-plan.json         Agent为本期编写的整数帧分镜
-original.srt      原字幕，不改写
-source-record.json 输入哈希（真实输入项目）
-production-choice.json 本期选择；未选或defer时不能当最终成片导出
-public/           本项目视频、动态mask、截图、字体和生成片段
-src/              可编辑Remotion组件
-out/final.mp4
-out/final.srt
-out/report.json
-```
-
-## 计划示例
+工程包括 plan.json、original.srt、captions.json、source-record.json、production-choice.json、designs/、public/、src/selected/、out/final.mp4、out/final.srt、out/report.json。design-build.json 保存每段效果与本期设计的哈希。
 
 ```json
 {
-  "version": 1, "status": "ready", "fps": 60,
-  "width": 1920, "height": 1080, "frames": 360,
+  "version": 3, "status": "needs_authoring", "fps": 60,
+  "width": 1920, "height": 1080, "frames": 1044,
   "presenter": "source.mp4", "mask": null,
   "scenes": [
-    {"id":"a","start":0,"frames":180,"kind":"side","eyebrow":"本期重点","lines":["完整词组","分层呈现"],"foot":"辅助解释"},
-    {"id":"b","start":180,"frames":180,"kind":"mg","variant":"P2-Capacity"}
+    {"id":"opening","start":0,"frames":389,"kind":"side","variant":"V31-IntroHuman","design":"designs/opening.json"},
+    {"id":"explain","start":389,"frames":655,"kind":"mg","variant":"V3-P2-Capacity","design":"designs/explain.json"}
   ]
 }
 ```
 
-`start/frames`均为整数帧，覆盖总帧数，不留空隙或重叠，ID不重复。`status`为needs_authoring时拒绝成片。内置MG例子的文案仅适合原上下文主题；新片必须改编。新增组件在Remade中明确注册。
+此示例不是可直接交付的成片：必须根据本期字幕建立两个 design 文件、素材和全长覆盖，再经检查设置 ready。详见 [源码改编](design-authoring.md)。start/frames 是整数帧，连续覆盖总时长；SRT 不改写、不均分、不得超过画面尾部。
 
-- `side/punch`：`eyebrow`、`lines`、`foot`决定本期文字。punch为大字进入并收稳。
-- `mg`：`variant`仅选择 approved-effects.json 中六项已确认 MG，未选中的旧路由会被拒绝。需要用户动态预览时设`mediaPreview`为public中的视频，该视频应覆盖所用局部时长和代码的trimBefore偏移。
-- `h3`：`asset`指向public中的实际生成视频；不足时长会拒绝，不能冻结尾部填充。`lines`可放准确画外标题。
-- `screen`：`screen`包含`asset/name/width/height/focus`；focus为原图像素中的[x,y,w,h]。使用完整原图，不用作者私有截图。
-- `through_body:true`且有presenter时，必须提供全长动态灰度视频mask（白为人物），`mask`相对于public。合成恢复原人物后再烧录字幕，不让人物覆盖字幕。蒙版必须和本期机位/动作匹配；仅帧数检查不能证明抠像边缘合格。
+- side/punch、mg、screen、h3：必须指定清单内的精确 variant 与已编排 design。纯真人无旁字可以用不带 variant/lines/design 的 side 段。
+- h3：asset 指向本期实际生成的视频；时长不足拒绝，不冻结尾部。文本和动作时钟属于 design。
+- screen：完整截图、软件身份、真实数值和 ROI 位于 design.screens，不能套作者截图位置。
+- through_body：含 presenter 的穿身段必须提供同时间线动态 mask。白为人物；可另提供 foreground。字幕在人物合成后最后烧录，检查移动边缘，而不只看帧数。
+- caption_emphasis：依据原 SRT cue.start 与重点词编排最终字幕层级；最多两个重点词，原 SRT 保留。
+- video：用户实际素材视频，用 asset 与整数帧 trimBefore。promo 仅用于明确需要的宣传开场/背景展示/收尾，不给整片强加片头片尾。
 
-本版将原片规范到1080p60，不变速；音视频尾差超过0.2秒时需先检查输入，不自动长冻结。短尾差仅补足原片声音所需的画面。源字幕哈希被保留；要改稿应另建明确的新版本，而不是直接改original.srt。
-
-修改plan后执行check，再渲染。检查out/report.json中的技术状态，并实际观看当前MP4。文字阅读不够应改镜头分工、提前进入或保留标签，不擅自加速口播。
-
-首次使用先读[first-run.md](first-run.md)。Python要求≥3.11；doctor缺基础依赖返回2，H3不影响基础检测。新输入项目须记录选择，旧项目与代码demo不追溯要求补选。
-
-
-0.2 增加 `promo` 场景（intro/backgrounds/outro）、`title`、`items:[{label,text}]`、`foreground`、`audio_source`、`background` 和视频场景 `trimBefore`（整数帧）。MG 的演示阶段按当前 scene.frames 归一化；本期标题、对象与动作必须按文意设计。普通成片不强加宣传片头片尾。
-
-替景依 matting.md，音频从 audio_source 读取，穿身从 foreground+mask 恢复。FFV1 动态 mask 没有 nb_frames 元数据时会实际计帧验证，不因容器元数据缺失误判成静图。替景记录须 reviewed 才可最终导出。
-
-宣传节选工程的 captions_burned=true 表示实际源片已经烧录字幕；原 SRT 作为无重复叠字的时间重排侧车保留。仅由 showreel.py 用于真实已编码片段，不用于跳过原片字幕制作。
-
-
-真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
+当前仅支持 1920×1080、60fps。输入规范化不改速；音画尾差超过 0.2 秒先检查输入，不长冻结。抠像使用 matting.py，四种背景需选择和审片；缺 H3 时依 [首次制作](first-run.md)记录用户选择。技术检测、画帧检查、连续观看、人工听音分别记实。

@@ -1,14 +1,12 @@
 import React from 'react';
 import {AbsoluteFill,Composition,Sequence,Img,staticFile,useCurrentFrame,useVideoConfig} from 'remotion';
 import {Video} from '@remotion/media';
-import {Human} from './Human';
-import {Remade} from './Remade';
-import {ScreenScene} from './ScreenScene';
 import {PromoScene} from './PromoScene';
 import {MediaContext,SceneContext,SceneSpec,Plan} from './RuntimeContext';
 import {plan,captions} from './data';
 import './vox';
+import {Selected} from './selected/Registry';
 const DemoBackground=()=> <AbsoluteFill style={{background:'#171721'}}><Img src={staticFile('backgrounds/didala-purple.png')} style={{width:'100%',height:'100%',objectFit:'cover'}}/></AbsoluteFill>;
-const Content=({s}:{s:SceneSpec})=>s.kind==='side'||s.kind==='punch'?<Human scene={s}/>:s.kind==='mg'?<Remade id={s.variant||s.id}/>:s.kind==='screen'?<ScreenScene/>:s.kind==='promo'?<PromoScene scene={s}/>:<><Video src={staticFile(s.asset!)} trimBefore={s.trimBefore||0} muted objectFit="cover" style={{width:'100%',height:'100%'}} premountFor={60}/>{s.lines&&<div style={{position:'absolute',left:100,top:85,color:'#fffaf0',fontFamily:'Han',fontSize:76,fontWeight:900,textShadow:'0 3px 10px #0009'}}>{s.lines.join('')}</div>}</>;
-export const Episode=({previewCaptions=true}:{previewCaptions?:boolean})=>{const f=useCurrentFrame(),{fps}=useVideoConfig(),row=captions.find(c=>c.start<=f/fps&&c.end>f/fps);return <AbsoluteFill>{plan.presenter?<Video src={staticFile(plan.presenter)} muted objectFit="cover" style={{width:'100%',height:'100%'}} premountFor={fps}/>:<DemoBackground/>}<MediaContext.Provider value={plan.mediaPreview||null}>{plan.scenes.map(s=><Sequence key={s.id} from={s.start} durationInFrames={s.frames} premountFor={fps}><SceneContext.Provider value={s}><Content s={s}/></SceneContext.Provider></Sequence>)}</MediaContext.Provider>{previewCaptions&&!plan.captions_burned&&row&&<div style={{position:'absolute',left:80,right:80,bottom:89,textAlign:'center',fontFamily:'Han',fontWeight:700,fontSize:58,lineHeight:1.25,color:'#fcfaff',WebkitTextStroke:'1.5px #21182f',paintOrder:'stroke fill',textShadow:'0 2px 5px #000a'}}>{row.text}</div>}</AbsoluteFill>};
+const Content=({s}:{s:SceneSpec})=>s.design?<Selected id={s.id}/>:s.kind==='promo'?<PromoScene scene={s}/>:s.kind==='side'?null:s.kind==='video'?<Video src={staticFile(s.asset!)} trimBefore={s.trimBefore||0} muted objectFit="cover" style={{width:'100%',height:'100%'}} premountFor={60}/>:null;
+export const Episode=({previewCaptions=true}:{previewCaptions?:boolean})=>{const f=useCurrentFrame(),{fps}=useVideoConfig(),row=captions.find(c=>c.start<=f/fps&&c.end>f/fps);return <AbsoluteFill>{plan.presenter?<Video src={staticFile(plan.presenter)} muted objectFit="cover" style={{width:'100%',height:'100%'}} premountFor={fps}/>:<DemoBackground/>}<MediaContext.Provider value={plan.mediaPreview||null}>{plan.scenes.map(s=><Sequence key={s.id} from={s.start} durationInFrames={s.frames} premountFor={fps}><SceneContext.Provider value={s}><Content s={s}/></SceneContext.Provider></Sequence>)}</MediaContext.Provider>{previewCaptions&&!plan.captions_burned&&row&&<div style={{position:'absolute',left:80,right:80,bottom:89,textAlign:'center',fontFamily:'Han',fontWeight:700,fontSize:52,lineHeight:1.25,color:'#fcfaff',WebkitTextStroke:'1.5px #21182f',paintOrder:'stroke fill',textShadow:'0 2px 5px #000a'}}>{row.text}</div>}</AbsoluteFill>};
 export const Root=()=> <Composition id="Episode" component={Episode} width={plan.width} height={plan.height} fps={plan.fps} durationInFrames={plan.frames}/>;

@@ -24,3 +24,11 @@
 The no-person purple studio background is included at the author's explicit request. The other three backgrounds are original procedural artwork. These four images may be reused with this project under its MIT distribution license. No private portrait or narration is bundled.
 
 The independently written local ONNX adapter accepts separately acquired [Robust Video Matting](https://github.com/PeterL1n/RobustVideoMatting) weights. Upstream RVM code/weights use GPL-3.0; neither their model source nor their weights are bundled or relicensed here. Obtain them from the official source and follow their terms. NumPy, Pillow and ONNX Runtime retain their own licenses; optional dependencies are installed in a separate user-selected environment.
+
+## Noto Serif SC
+
+The unmodified Noto Serif SC variable font is bundled as EditorialSerif.ttf under SIL OFL 1.1. Full license travels with the font as NotoSerifSC-OFL.txt. Font binaries and their terms are not covered by the code MIT license. Source: https://github.com/google/fonts/tree/main/ofl/notoserifsc
+
+## Original generated reference keyframes
+
+The four assets/generation-keyframes images are original generated miniature/illustration references supplied with this project under the project MIT license. They contain no author portrait, voice or account screenshots. CelCounter uses a frame from the approved blue-checklist correction. Model/service terms still apply to newly generated outputs.

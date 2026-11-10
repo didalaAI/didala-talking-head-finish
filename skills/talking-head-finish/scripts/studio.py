@@ -2,6 +2,7 @@
 from pathlib import Path
 import argparse,array,hashlib,json,math,os,random,re,shutil,subprocess,sys,wave
 from capabilities import validate_choice
+from design import compile_project,validate_spec,inside as design_inside
 if hasattr(sys.stdout,'reconfigure'):sys.stdout.reconfigure(encoding='utf-8')
 SKILL=Path(__file__).resolve().parents[1]
 
@@ -49,11 +50,18 @@ def validate(project,plan,require_ready=True):
         if type(s['start']) is not int or type(s['frames']) is not int or s['start']!=cursor or s['frames']<=0:raise ValueError('Scene plan must cover the movie with integer frames, without gaps or overlaps')
         cursor+=s['frames']
         if s['kind'] not in ['side','punch','mg','h3','video','screen','promo']:raise ValueError('Unknown scene kind')
+        if s.get('design'):
+            spec=read(design_inside(project,s['design']))
+            validate_spec(project,s,spec,plan.get('technical_demo',False))
+            recipe=spec.get('recipe',{})
+            if plan.get('presenter') and any(b.get('kind') in ['punch','hero'] for b in [recipe]+recipe.get('beats',[])) and not s.get('through_body'):raise ValueError('This confirmed choreography needs the current dynamic foreground/mask and through_body=true')
+        if s['kind'] in ['mg','h3','screen'] or (s['kind'] in ['side','punch'] and (s.get('lines') or s.get('variant'))):
+            if not s.get('design'):raise ValueError('Choose a confirmed effect and author its design spec; old default styles are retired')
         if s['kind']=='mg':
             allowed={x['id'] for x in read(SKILL/'references/approved-effects.json')['effects'] if x['mode']=='mg'}
             if s.get('variant',s['id']) not in allowed:raise ValueError('MG is not in the confirmed effect collection')
         if s.get('through_body') and plan.get('presenter') and not plan.get('mask'):raise ValueError('Through-body text requires a real dynamic person mask. No static-mask fallback.')
-        if plan.get('presenter') and (s['kind']=='punch' or s.get('variant',s['id']) in ['CapacityHuman','ManageHuman'] or any(b.get('kind') in ['punch','hero'] for b in s.get('beats',[]))) and not s.get('through_body'):raise ValueError('Presenter punch choreography must set through_body=true and use the current dynamic foreground/mask')
+        if plan.get('presenter') and (s['kind']=='punch' or s.get('variant',s['id']) in ['V31-CapacityHuman','V31-ManageHuman','V31-ClosingHuman'] or any(b.get('kind') in ['punch','hero'] for b in s.get('beats',[]))) and not s.get('through_body'):raise ValueError('Presenter punch choreography must set through_body=true and use the current dynamic foreground/mask')
         last_beat=-1
         for beat in s.get('beats',[]):
             if beat['at']<0 or beat['at']<=last_beat or beat['at']>=s['frames']/60 or not beat.get('lines') or beat.get('kind','side') not in ['side','punch','cta','hero']:raise ValueError('Human beats require ordered in-scene timestamps and authored lines')
@@ -64,7 +72,7 @@ def validate(project,plan,require_ready=True):
         if s['kind'] in ['h3','video']:
             p=inside(project,s.get('asset',''));v=next(x for x in probe(p)['streams'] if x['codec_type']=='video')
             if float(v.get('duration',0))+1/float(plan['fps'])<(s['frames']+s.get('trimBefore',0))/plan['fps']:raise ValueError('Generated clip is too short; freezing its tail is not allowed')
-        if s['kind']=='screen':
+        if s['kind']=='screen' and not s.get('design'):
             cfg=s.get('screen',{})
             if not inside(project,cfg['asset']).is_file():raise ValueError('Missing original screenshot')
             if min(cfg['width'],cfg['height'])<=0:raise ValueError('Screenshot dimensions must be positive')
@@ -84,6 +92,7 @@ def validate(project,plan,require_ready=True):
     return True
 
 def write_data(project,plan,rows):
+    compile_project(project,plan)
     (project/'src/data.ts').write_text("import {Plan} from './RuntimeContext';\nexport const plan:Plan="+json.dumps(plan,ensure_ascii=False)+";\nexport const captions:{start:number;end:number;text:string}[]="+json.dumps(rows,ensure_ascii=False)+";\n",encoding='utf-8')
 
 def init(project,video=None,srt=None,demo=False):
@@ -92,6 +101,7 @@ def init(project,video=None,srt=None,demo=False):
     shutil.copytree(SKILL/'assets/template',project,dirs_exist_ok=True)
     shutil.copytree(SKILL/'assets/backgrounds',project/'public/backgrounds',dirs_exist_ok=True)
     if demo:
+        shutil.copytree(SKILL/'assets/demo-designs',project/'designs',dirs_exist_ok=True)
         plan=read(SKILL/'assets/demo-plan.json');shutil.copy2(SKILL/'assets/demo.srt',project/'original.srt')
     else:
         if not video or not srt:raise ValueError('init requires --video and --srt')
@@ -129,12 +139,20 @@ PlayResY: 1080
 WrapStyle: 2
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Source Han Sans CN,58,&H00FFFAFC,&H00302016,&H00302016,&H500C0914,-1,0,0,0,100,100,0,0,1,2,1.3,2,80,80,89,1
+Style: Default,Source Han Sans CN,52,&H00FFFAFC,&H00302016,&H00302016,&H500C0914,-1,0,0,0,100,100,0,0,1,2,1.3,2,80,80,89,1
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 '''
+    marks=read(project/'plan.json').get('caption_emphasis',[]) if (project/'plan.json').exists() else []
+    for mark in marks:
+        row=next((r for r in rows if abs(r['start']-mark['start'])<.001),None)
+        if not row or not 1<=len(mark['words'])<=2 or any(not w or w not in row['text'] for w in mark['words']):raise ValueError('Caption emphasis must match one or two actual words at an original SRT cue start')
     for row in rows:
         text=row['text'].replace('\\','／').replace('{','（').replace('}','）').replace('\n',r'\N')
+        words=next((m['words'] for m in marks if abs(m['start']-row['start'])<.001),[])
+        if words:
+            escaped=[w.replace('\\','／').replace('{','（').replace('}','）').replace('\n',r'\N') for w in words]
+            text=re.sub('|'.join(re.escape(w) for w in sorted(escaped,key=len,reverse=True)),lambda m:r'{\fs58\c&H007EC7F0&}'+m[0]+r'{\r}',text)
         head+=f"Dialogue: 0,{stamp(row['start'])},{stamp(row['end'])},Default,,0,0,0,,{text}\n"
     (project/'captions.ass').write_text(head,encoding='utf-8')
 
@@ -188,7 +206,7 @@ def render(project):
 def doctor(project=None):
     checks={k:shutil.which(k) for k in ['node','npm','pnpm','ffmpeg','ffprobe','nvidia-smi']}
     checks['python']=sys.version.split()[0];checks['python_supported']=sys.version_info>=(3,11)
-    checks['font']=all((SKILL/'assets/template/public'/name).is_file() for name in ['SourceHanSansCN-700.otf','SourceHanSansCN-900.otf'])
+    checks['font']=all((SKILL/'assets/template/public'/name).is_file() for name in ['SourceHanSansCN-700.otf','SourceHanSansCN-900.otf','EditorialSerif.ttf','NotoSerifSC-OFL.txt'])
     checks['browser']=next((str(p) for p in [Path(os.environ.get('REMOTION_BROWSER_EXECUTABLE','missing')),Path('C:/Program Files/Google/Chrome/Application/chrome.exe'),Path('C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe')] if p.is_file()),None)
     checks['libass']=bool(checks['ffmpeg'] and 'subtitles' in subprocess.check_output([checks['ffmpeg'],'-hide_banner','-filters'],stderr=subprocess.DEVNULL).decode('utf-8','replace'))
     checks['package_manager']=bool(checks['npm'] or checks['pnpm']);checks['base_ready']=all(checks[k] for k in ['node','ffmpeg','ffprobe','font','package_manager','browser','libass','python_supported'])

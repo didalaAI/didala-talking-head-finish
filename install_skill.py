@@ -5,7 +5,7 @@ from datetime import datetime
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / 'skills/talking-head-finish'
-VERSION = '0.2.0-preview'
+VERSION = '0.3.0'
 REPOSITORY = 'https://github.com/didalaAI/didala-talking-head-finish'
 RECEIPT = '.installation.json'
 EXCLUDED = {'__pycache__', 'node_modules', '.git', '.env', '.venv'}
@@ -36,7 +36,7 @@ def payload(host):
                  'display_name_en: Didala Talking Head Finish\n'
                  'description_zh: 用自己的口播和SRT制作语义动效成片，按可用后端选择制作方式。\n'
                  'description_en: Produce semantic talking-head motion graphics from your video and SRT.\n'
-                 'version: "0.2.0"\nauthor: "didalaAI"\n')
+                 'version: "0.3.0"\nauthor: "didalaAI"\n')
         result['SKILL.md'] = ('---' + head + '---' + body).encode('utf-8')
     required = ['scripts/studio.py', 'scripts/capabilities.py', 'references/first-run.md',
                 'assets/template/public/SourceHanSansCN-700.otf',
