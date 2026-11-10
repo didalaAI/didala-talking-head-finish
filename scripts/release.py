@@ -1,6 +1,6 @@
 """Audit and package only public source; never bundle installed environments."""
 from pathlib import Path
-import argparse,hashlib,json,re,sys,zipfile
+import argparse,hashlib,json,re,sys,zipfile,subprocess,shutil
 ROOT=Path(__file__).resolve().parents[1]
 EXTENSIONS={'.md','.py','.tsx','.ts','.cjs','.json','.yaml','.yml','.txt','.otf','.ttf','.png'}
 NAMES={'LICENSE','.gitignore','.gitattributes','.env.example'}
@@ -12,6 +12,11 @@ def source_files():
 
 def audit():
     errors=[];files=source_files()
+    if (ROOT/'.git').exists() and shutil.which('git'):
+        names='\0'.join(p.relative_to(ROOT).as_posix() for p in files)+'\0'
+        check=subprocess.run(['git','check-ignore','-z','--stdin'],input=names.encode(),cwd=ROOT,capture_output=True)
+        if check.returncode==0:errors.append('Public source is ignored by Git: '+check.stdout.decode().replace('\0',', '))
+        elif check.returncode!=1:errors.append('Could not verify public Git ignore rules')
     required=['LICENSE','THIRD_PARTY_NOTICES.md','README.md','docs/VALIDATION.md','skills/talking-head-finish/SKILL.md','skills/talking-head-finish/LICENSE','skills/talking-head-finish/THIRD_PARTY_NOTICES.md']
     for value in required:
         if not (ROOT/value).is_file():errors.append('Missing required file: '+value)

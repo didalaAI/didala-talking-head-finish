@@ -19,6 +19,7 @@ out/
 *.log
 *.receipt.json
 *-receipt.json
+!skills/talking-head-finish/references/selection-receipt.json
 input-record.json
 generation.json
 finish-record.json

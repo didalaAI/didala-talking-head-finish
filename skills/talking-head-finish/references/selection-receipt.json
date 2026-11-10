@@ -1,0 +1,275 @@
+{
+  "revision": 159,
+  "confirmed_at": "2026-11-10T22:59:39+08:00",
+  "catalog_sha256": "fb1007269efe3e92df3197c37a2b2c8ba0589b2e0809eb0bbd2c17ef5eaa7f34",
+  "keep": [
+    {
+      "id": "V31-IntroHuman",
+      "source_key": "IntroHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-ClarifyHuman",
+      "source_key": "ClarifyHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-MisconceptionHuman",
+      "source_key": "MisconceptionHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-MemoryQuestionHuman",
+      "source_key": "MemoryQuestionHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-CapacityHuman",
+      "source_key": "CapacityHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-ManageHuman",
+      "source_key": "ManageHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-WatchHuman",
+      "source_key": "WatchHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-SummaryHuman",
+      "source_key": "SummaryHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-ClosingHuman",
+      "source_key": "ClosingHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-A-Human",
+      "source_key": "A-Human",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V31-CelCounter",
+      "source_key": "CelCounter",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-B-Screen",
+      "source_key": "B-Screen",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-C-Compare",
+      "source_key": "C-Compare",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-D-Collage",
+      "source_key": "D-Collage",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-E-Handoff",
+      "source_key": "E-Handoff",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-F-Explode",
+      "source_key": "F-Explode",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-P2-Capacity",
+      "source_key": "P2-Capacity",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-P2-Packet",
+      "source_key": "P2-Packet",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-V1-Capacity",
+      "source_key": "V1-Capacity",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-V1-Packet",
+      "source_key": "V1-Packet",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-ClayReader",
+      "source_key": "ClayReader",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-Architecture",
+      "source_key": "Architecture",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V3-OpticalReplay",
+      "source_key": "OpticalReplay",
+      "frequency": "occasional",
+      "note": ""
+    },
+    {
+      "id": "B-Screen",
+      "source_key": "B-Screen",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "E-Handoff",
+      "source_key": "E-Handoff",
+      "frequency": "occasional",
+      "note": ""
+    },
+    {
+      "id": "F-Explode",
+      "source_key": "F-Explode",
+      "frequency": "occasional",
+      "note": ""
+    },
+    {
+      "id": "B-Screen-V2",
+      "source_key": "B-Screen",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-IntroHuman",
+      "source_key": "IntroHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-FixLoss",
+      "source_key": "FixLoss",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-ClarifyHuman",
+      "source_key": "ClarifyHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-Aperture",
+      "source_key": "Aperture",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-MisconceptionHuman",
+      "source_key": "MisconceptionHuman",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-StatelessIntro",
+      "source_key": "StatelessIntro",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-StatelessCore",
+      "source_key": "StatelessCore",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-MemoryQuestionHuman",
+      "source_key": "MemoryQuestionHuman",
+      "frequency": "regular",
+      "note": "豆包这些智能体前面要加上对应的图标"
+    },
+    {
+      "id": "V2-ReReadFilm",
+      "source_key": "ReReadFilm",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-OverflowB",
+      "source_key": "OverflowB",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-HandoffCarry",
+      "source_key": "HandoffCarry",
+      "frequency": "regular",
+      "note": ""
+    },
+    {
+      "id": "V2-CompressLoad",
+      "source_key": "CompressLoad",
+      "frequency": "regular",
+      "note": ""
+    }
+  ],
+  "exclude_ids": [
+    "V3-A-Human",
+    "V3-IntroHuman",
+    "V3-ClarifyHuman",
+    "V3-MisconceptionHuman",
+    "V3-MemoryQuestionHuman",
+    "V3-CapacityHuman",
+    "V3-ManageHuman",
+    "V3-WatchHuman",
+    "V3-SummaryHuman",
+    "V3-ClosingHuman",
+    "V3-W1-Capacity",
+    "V3-W1-Packet",
+    "V3-CelCounter",
+    "A-Human",
+    "C-Compare",
+    "D-Collage",
+    "A-Human-V2",
+    "C-Compare-V2",
+    "D-Collage-V2",
+    "E-Handoff-V2",
+    "F-Explode-V2",
+    "V2-CapacityHuman",
+    "V2-ManageHuman",
+    "V2-WatchHuman",
+    "V2-SummaryHuman",
+    "V2-ClosingHuman",
+    "V2-P2-Capacity",
+    "V2-P2-Packet",
+    "V2-W1-Capacity",
+    "V2-W1-Packet",
+    "V2-V1-Capacity",
+    "V2-V1-Packet"
+  ]
+}
