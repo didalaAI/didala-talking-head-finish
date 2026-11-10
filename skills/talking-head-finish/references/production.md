@@ -16,9 +16,3 @@
 
 
 真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
-
-
-真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
-
-
-真人九项的实际编排示例见 [human-choreography.json](human-choreography.json)。`beats` 保存分阶段旁字/穿身/CTA换词，`tags` 保存逐条要点与可选本期图标，`meter` 保存进度与可选真实数字；不再把全部真人段简化成同一种旁字。按本期 SRT 重新定时，不能直接照搬例句、呼吁动作或数字。
